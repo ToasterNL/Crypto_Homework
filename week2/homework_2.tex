@@ -35,12 +35,12 @@ To subscribe God@heaven.af.mil to the mailing list the following steps need to b
 		\begin{itemize}
 		\item Rotates the 32-bits number (cookie) to the right by 4 bits;
 		\item Subtracts (or XORs) the byte value of the current character in the e-mail address;
-		\item Keeps rotating and subtracting until it has subtracted and rotated the first character in the e-mail address;
+		\item Keeps rotating and subtracting/XORing until it has subtracted and rotated the first character in the e-mail address;
 		\item Now the attacker is left with a 32-bits value that is $h()$'s internal state for the secret string - in other words we have $h(secret)$.
 		\end{itemize}
 	\item While this does not give the attacker the secret, we have the 32-bit state from which to compute $h(secret||address)$ using $initial\_state = recovered\_state$ rather than starting from initial state zero.
 	For this we will use the modified function $h_2$.
-\[ h_2(address, recovered\_state) = h(secret||addresses) = h_2(secret||addresses,0) \]
+\[ h(secret||addresses) = h_2(secret||addresses,0) = h_2(address, recovered\_state) \]
 	\item The attacker now proceeds to send an email subscribing the victim to the mailing list.
 	\item After waiting for a bit (the average time for Majordomo to generate and send the cookie, which could be timed in step 1 and 2) the attacker replies with the previously calculated cookie in another forged email.
 	\item Majordomo finds this cookie correct and activates the victim's subscription.
