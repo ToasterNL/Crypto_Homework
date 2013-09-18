@@ -9,7 +9,7 @@
   \end{array}\right)
 }
 
-\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002, s4092368}
+\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002, s4092368 \\ Radboud University}
 \title{Cryptography 1, Homework 2}
 
 \begin{document}
@@ -86,13 +86,11 @@ This was basically a set of educated guesses.
 The first thing we did was to find the biggest power of $p$ that was still smaller than $m$.
 Then we found the biggest coefficient such that:
 
-\[ coeffient \cdot p^x < m \]
-
+\[ coeffient \cdot p^x \le m \]
 In this first step we found that $454 \cdot p^4$ delivered the biggest coefficient.
 We then subtracted that value from $m$ and repeated the same steps. Which resulted in:
 
 \[ m = 454 \cdot p^4 + 351091 \cdot p^3 + 251633 \cdot p^2 + 245176 \cdot p + 411981 \]
-
 After that it was simply a matter of inserting the parameters $r$ and $s$.
 
 \[ a = 454 \cdot r^5 + 351091 \cdot r^4 + 251633 \cdot r^3 + 245176 \cdot r^2 + 411981 \cdot r + s \pmod p \]
