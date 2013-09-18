@@ -1,0 +1,39 @@
+Cryptography I Homework
+Week 2, Exercise 2
+Students: 	Aram Verstegen (studentnumber)
+			Mark Vijfvinkel (0863002)
+
+			
+Question 1:
+
+There was some debate on how interpret the rotation operation. We opted to explain three ways on the rotation.
+
+1)
+If we take the description in the assignment literally then when the rotation reaches the end of the 32-bits and bits start falling off, those bits will be added again to the right.
+For example, take following 8-bits: 11110001. If we shift that to the left with 4 bits, we would end up with 00011111.
+
+To subscribe God@heaven.af.mil to the mailing list the following steps need to be taken:
+	1) 	The attacker first subscribes himself to the mailing list, for example eve@evil.com
+	2) 	The attacker will then receive the 32-bits confirmation number as normal.
+	3) 	Then the attacker will reverse the steps by doing the opposite.
+	4) 	So first rotate the 32-bits number to the right with 4 bits.
+	5) 	Then subtracting the byte value of the last character in the email address. The 'm' in the example
+	6) 	Rotate 4 bits to the right.
+	7) 	Subtract the byte value of the second last character. The 'o'.
+	8) 	Keep rotating and subtracting until you subtracted and rotated the first character in the email.
+	9) 	Now the attacker is left with the 32-bits value of the secret string after the rotate left and addition operations.
+	10) By resuming normal operation (rotate left and add) with the targets email, the 32-bits confirmation number can be calculated.
+	11)	The attacker now proceeds as normal. First forge an email subscribing the victim to the mailing list.
+	12) After waiting for a bit (could be timed in step 1 and 2), the attacker replies with the previously calculated confirmation number (step 10) in another forged email.
+	13) Majordomo finds this correct and start emailing the victim.
+	
+There are several ways to combat this attack. One way would be to use the secret last, so h(ak) instead of h(ka). The attacker does not know the secret and therefore does not know what bytes to subtract.
+An other way would be proper hashing algoritm that uses a passphrase set by the user.
+
+2)
+Using a carry bit:
+
+3)
+
+
+Question 2:
