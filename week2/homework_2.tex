@@ -9,7 +9,7 @@
   \end{array}\right)
 }
 
-\author{Mark Vijfvinkel \& Aram Verstegen \\ ??, s4092368}
+\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002, s4092368}
 \title{Cryptography 1, Homework 2}
 
 \begin{document}
@@ -82,6 +82,11 @@ The script hack\_majordomo.py is attached.
 
 \section{Carter-Wegman MACs}
 The tricky part, and the part on which we fumbled a bit, was to express $m$ in base-$p$.
+This was basically a set of educated guesses.
+The first we did was to find the biggest power of $p$ that was still smaller than $m$.
+
+
+
 After that it was simply a matter of inserting the parameters $r$ and $s$.
 
 \[ m = 454 \cdot p^4 + 351091 \cdot p^3 + 251633 \cdot p^2 + 245176 \cdot p + 411981 \]
