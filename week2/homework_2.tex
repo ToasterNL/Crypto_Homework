@@ -52,7 +52,7 @@ The attacker cannot compute forwards beyond the e-mail address bytes because the
 At least this would make the algorithm more strongly resemble a one-way hash function.
 
 But this is still vulnerable to forgery, because the attacker may collect a number of e-mail address / cookie pairs and use a linear solver (or brute-force) to recover the secret by guessing the bits that fell off.
-This search would have worst-case complexity of $2^n$ where $n$ is the length of the secret, assuming no more than 1 bit is truncated per consumed byte.
+%This search would have worst-case complexity of $2^{3n}$ where $n$ is the length of the secret, assuming no more than 3 bits are truncated per consumed byte (this is based on the notion that ASCII bytes are $\le 0x7f$ which can be expressed in 7 bits - leaving a maximum of 3 that fall off - and the assumption that the secret is expressed as ASCII).
 A much better way would be a proper keyed MAC algorithm like HMAC based on a cryptographically secure hash function that is still considered secure.
 
 From the Majordomo developers mailing list we found out that the developers were actually quite concerned about the kind of attack this assignment is about.
