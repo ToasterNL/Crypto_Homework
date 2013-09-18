@@ -49,9 +49,11 @@ To subscribe God@heaven.af.mil to the mailing list the following steps need to b
 There are several ways to combat this attack.
 A simple fix would be to use the secret last, so $h(ak)$ instead of $h(ka)$.
 The attacker cannot compute forwards beyond the e-mail address bytes because the secret is unknown to him and the result he obtains has been truncated to 32-bits so some crucial information is missing.
-This is still vulnerable to forgery, because the attacker may collect a number of e-mail address / cookie pairs and use a linear solver (or brute-force) to recover the secret.
+At least this would make the algorithm more strongly resemble a one-way hash function.
 
-A much better way would be a proper keyed MAC algorithm based on a cryptographically secure hash function that is still considered secure.
+But this is still vulnerable to forgery, because the attacker may collect a number of e-mail address / cookie pairs and use a linear solver (or brute-force) to recover the secret by guessing the bits that fell off.
+This search would have worst-case complexity of $2^n$ where $n$ is the length of the secret, assuming no more than 1 bit is truncated per consumed byte.
+A much better way would be a proper keyed MAC algorithm like HMAC based on a cryptographically secure hash function that is still considered secure.
 
 From the Majordomo developers mailing list we found out that the developers were actually quite concerned about the kind of attack this assignment is about.
 Here is an entertaining comment from one of the threads about the gen\_cookie feature:
