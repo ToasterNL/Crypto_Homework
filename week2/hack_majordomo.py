@@ -66,7 +66,7 @@ def main():
     if len(args):
         address_string = args[0]
     else:
-        print "You must supply an address to subscribe to the list"
+        parser.print_help()
         return
 
     real_cookie = h(options.secret, address_string, options.use_xor)
