@@ -50,7 +50,7 @@ def main():
     import optparse
     import os
 
-    parser = optparse.OptionParser(usage="usage: %prog [options] victim e-mail")
+    parser = optparse.OptionParser(usage="usage: %prog [options] <victim e-mail>")
     parser.add_option('-x', '--xor', help="Do XOR instead of addition",
                       action="store_true", dest="use_xor", default=False)
     parser.add_option('-e', '--email',
