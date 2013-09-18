@@ -20,7 +20,7 @@
 There was some debate on how interpret the rotation operation; whether the rotation means simply a left shift (rotation without carry) or a rotation with carry.
 The former is trivially forged, as only the last $\frac{32}{4} = 8$ bytes of the input are needed to compute the secret; everything before that would fall off on the left side of the 32-bit state.
 We therefore continue on the assumption that rotation with carry is implied.
-(For example, if we rotate bits 11110001 to the left by 4 bits we would end up with 00011111 rather than 0001000.)
+(For example, if we rotate bits 11110001 to the left by 4 bits we would end up with 00011111 rather than 00010000.)
 
 Majordomo actually uses XOR, rather than addition as described in the assignment.
 Since both XOR and addition are associative and commutative, there is nothing stopping us from applying the algorithm in reverse to compute the 32-bit state for an unknown secret, based on a valid e-mail address / cookie pair.
