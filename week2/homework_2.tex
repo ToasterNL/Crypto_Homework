@@ -16,7 +16,7 @@
 \maketitle
 \date
 
-\section{}
+\section{Majordomo}
 There was some debate on how interpret the rotation operation; whether the rotation means simply a left shift (rotation without carry) or a rotation with carry.
 The former is trivially forged, as only the last $\frac{32}{4} = 8$ bytes of the input are needed to compute the secret; everything before that would fall off on the left side of the 32-bit state.
 We therefore continue on the assumption that rotation with carry is implied.
@@ -80,7 +80,17 @@ Here is an entertaining comment from one of the threads about the gen\_cookie fe
 
 The script hack\_majordomo.py is attached.
 
-\section{}
+\section{Carter-Wegman MACs}
+The tricky part, and the part on which we fumbled a bit, was to express $m$ in base-$p$.
+After that it was simply a matter of inserting the parameters $r$ and $s$.
+
+\[ m = 454 \cdot p^4 + 351091 \cdot p^3 + 251633 \cdot p^2 + 245176 \cdot p + 411981 \]
+\[ a = 454 \cdot r^5 + 351091 \cdot r^4 + 251633 \cdot r^3 + 245176 \cdot r^2 + 411981 \cdot r + s \pmod p \]
+\[ a = 686886 \]
+
+
+
+The script mac.py is attached.
 
 
 \bibliographystyle{plain}
