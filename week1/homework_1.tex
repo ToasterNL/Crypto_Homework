@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\newenvironment{amatrix}[1]{%
+  \left(\begin{array}{@{}*{#1}{c}|c@{}}
+}{%
+  \end{array}\right)
+}
+
+\author{Aram Verstegen \\ s4092368}
+\title{Cryptography 1, Homework 1}
+
+\begin{document}
+\maketitle
+\date
+
+\section{}
+After we selected nodes in the graph we connected each unselected node to a selected node, thereby ensuring each node in the selected set is in the neighbourhood of each node in the graph.
+The unselected nodes are further connected amongst themselves, but not the selected nodes.
+This means this step does not affect which nodes are connected to nodes in our selected set.
+
+\section{}
+When we sum up the values of the selected nodes (the private key), we are implicitly summing the values which were distributed amongst all the nodes of the graph as a partitioning of the message, because this code reaches all nodes in the graph, and the nodes therefore contain the sum value of all the node values as they were set before summing neighbouring values.
+
+\section{}
+There are two ways to approach this, we can try to find the perfect code for the given graph but know this is an NP-hard problem.
+We have extra information to find a solution, namely the summed values on the nodes in an encoded message.
+
+We can view this graph as a system of linear equations. Defining the nodes as $a, b, c, d, e, f, g, h$ starting from the top left and going counter-clockwise we can try to solve the system of summed values to their pre-summing coefficients.
+
+\[
+\begin{amatrix}{8}
+1 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 17 \\
+0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 &  3 \\
+0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & -4 \\
+0 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 16 \\
+0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 &  4 \\
+1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 14 \\
+0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 10 \\
+1 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 12
+\end{amatrix}
+\]
+
+\[
+\begin{amatrix}{8}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 &  4 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 &  5 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & -3 \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 &  6 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & -7 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 &  4 \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 &  5 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 &  9
+\end{amatrix}
+\]
+
+Giving a summed value of 23.
+The extra information of pre-summing values helped me to recover the secret key: nodes with pre-summing values 10, 17 and -4.
+
+I've implemented a solver using python and the scipy library which can crack randomly generated graphs of up to 1000 nodes in under a minute but usually in a few seconds on a single Atom N570 core.
+It seems that larger numbers to partition a number make the matrix systems less determined, while more connections between the unselected nodes make the systems more determined.
+
+\section{}
+We can view the graph as a matrix of $10000 \cdot 10000$ and still crack messages with reasonable efficiency provided we have enough RAM.
+
+But I think we should again look at a way to find the perfect code for a given graph.
+My intuition so far is that the degree of the nodes (and therefore the number of coefficients in the corresponding matrix row) can provide us some foothold in cutting down the search space.
+A node connected to only one other node as its neighbour must have one of these nodes as a selected node, because we know that the selected nodes form a perfect code.
+For a node which we suspect to be selected, we can know that all of the nodes it connects to are unselected, and conversely for a node which we suspect to be unselected we can know that some, but not all of its neighbours are unselected.
+Applying this notion to one of our `foothold points' we can recursively traverse the graph to find candidate selections, and test these hypotheses.
+
+Apparently this problem is known to be NP-hard but I suspect that this approach may find a faster solution than by using matrix decomposition, depending on the size and structure of the graph.
+
+\end{document}
