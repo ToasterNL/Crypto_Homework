@@ -20,7 +20,7 @@
 There was some debate on how interpret the rotation operation; whether the rotation means simply a left shift (rotation without carry) or a rotation with carry.
 The former is trivially forged, as only the last $\frac{32}{4} = 8$ bytes of the input are needed to compute the secret; everything before that would fall off on the left side of the 32-bit state.
 We therefore continue on the assumption that rotation with carry is implied.
-(For example, take the following 8-bits: 11110001. If we shift that to the left with 4 bits, we would end up with 00011111.)
+(For example, take the following 8-bits: 11110001. If we rotate that to the left with 4 bits, we would end up with 00011111.)
 
 Majordomo actually uses XOR, rather than addition as described in the assignment.
 Since both XOR and addition are associative and commutative, there is nothing stopping us from applying the algorithm in reverse to compute the 32-bit state for an unknown secret, based on a valid e-mail address / cookie pair.
@@ -38,7 +38,7 @@ To subscribe God@heaven.af.mil to the mailing list the following steps need to b
 		\item Keeps rotating and subtracting until it has subtracted and rotated the first character in the e-mail address;
 		\item Now the attacker is left with a 32-bits value that is $h()$'s internal state for the secret string - in other words we have $h(secret)$.
 		\end{itemize}
-	\item While this does not give the attacker the secret, we have the 32-bit state from which to compute $h(address)$ using $initial\_state = recovered\_state$ rather than starting from initial state zero.
+	\item While this does not give the attacker the secret, we have the 32-bit state from which to compute $h(secret||address)$ using $initial\_state = recovered\_state$ rather than starting from initial state zero.
 	For this we will use the modified function $h_2$.
 \[ h_2(address, recovered\_state) = h(secret||addresses) = h_2(secret||addresses,0) \]
 	\item The attacker now proceeds to send an email subscribing the victim to the mailing list.
@@ -75,6 +75,8 @@ Here is an entertaining comment from one of the threads about the gen\_cookie fe
 \end{quotation}
 \cite{majordomo_thread}
 (Note that SNEFRU was known to be broken as early as 1993. Also, somebody else in the thread proposed a method of hashing which is vulnerable to a hash-length extension attack.)
+
+The script hack\_majordomo.py is attached.
 
 \section{}
 
