@@ -1,0 +1,144 @@
+Substitution ciphers
+  Encrypt using table
+  The uncertainty of the key
+  Redundancy per symbol of a word over given alphabet and key of length n
+  Unicity distance of system given redundancy of x bits per letter
+  Demonstrate unicity distance using as few letters as possible between keys and ciphertext
+  Probability of correlation between strings given constraints
+  Determine most likely key length, key
+
+Binary sequences
+  Show that linear complexity is minimal given a vector in is the linear span of the system's matrix
+  Show linear equivalence (complexity) of given row
+  Give LFSR (polynomial) for given row
+  Polynomials encoded as bitstrings
+
+Finite fields
+  Compute number of irreducible polynomials of given degree in given field
+  Show if polynomial is irreducible
+  Factorization of polynomial over field
+  Compute gcd of given polynomial in given field
+  Compute egcd of given polynomial in given field, and express as a linear combination
+  Smallest extension field of given field over which polynomial completely factors into linear factors
+  Use Miller-Rabin test to show that polynomial is reducible over given field
+  Product of order of other irreducible polynomials of given degree
+  Subfields of prime field
+  Factorization pattern of polynomial over field
+  Show that there is no irreducible polynomial of given degree in given field
+
+LFSRs
+  Given a polynomial, show that each state has a predecessor (given constraints)
+  Period of LFSR given polynomial
+  Period if polynomial is irreducible
+  Optimize LFSR polynomial
+  Possible periods in XOR combination of 2 LFSRs with given periods
+  Prove that the next state becomes 0 for a LFSR XORing two polynomials
+  Why does a given initial state generate a sequence with maximal length
+  Linear recurrence relation that gives state as linear combination of multiple previous states
+  Give recurrence relation for specific example
+
+Groups
+  Order of group
+  Investigate if made up operation generates group
+  Investigate if group is ring with unity
+  Elements of group and their orders
+  Show group commutativity (aka abelian)
+
+Diffie-Hellman
+  Using binary polynomilals modulo another polynomial to agree on some common *bits*
+  DH in cyclic subgroup of Z with given generator, observe private halves, compute shared key
+
+Modular arithmetic
+Discrete Logarithm Problem (DLP)
+  Multiplicative order of number in field
+  Baby-step giant-step algorithm
+  Baby-step giant-step algorithm to find 29 == g^c mod 71
+  Find order of group element
+  Show that given field has given generator
+  Pohlig-Hellman method
+  Pohlig-Hellman method to split up a problem
+  Show that the multiplicative order of 2 modulo y = x
+  Prelimenary work to set up 2^m = c (mod 37), and solve for c=27
+  Solve DLP using factorization
+  Use ecd to find factors that help sum to 1
+  Find smallest integer solution to system of modular congruences
+
+Elliptic curves
+  Number of points on given curve
+  Show given points are on curve
+  Determine line through points find more points of intersection
+  Add points on curve
+  Multiply points on curve (by a constant)
+  Find affine points on given (twisted) Edwards curve
+  Verify points are on curve
+  Translate curve and points to Weierstrass form
+  Translate curve and points to Montgomery form
+  Compute output at translated point
+
+Hill cipher
+  Key conditions for cryptosystem
+  Perform decryption given conditions
+  Check that conditions hold given key and ciphertext
+  Recover key from plain/ciphertext pair
+
+Integer factorization
+  Pollard-rho algorithm
+  Pollard-rho p-1 factorization algorithm with given bases and exponents
+  Given starting point, iteration
+  Fermat test with base 2 to do primality test
+  Smooth numbers
+  Give upper bound on smooth number exponents
+  Prove congruence of x^R mod p where R is a smooth number
+  Prove that almost always gcd(u^R-1,n)=p for a random 1<=u<n
+  Show when/how it fails
+  Floyd's cycle finding algorithm
+  Factorize modulus < 1000: square-and-multiply
+
+RSA
+  p, q <- large_primes()
+  n=p*q
+  phi(n) = (p-1)(q-1) (nb: this is a simplification of phi() that only works with primes)
+  choose 1 < e < phi(n) so that gcd(e,phi(n)) = 1, i.e. e and phi(n) are relatively prime
+  d^{-1} = e (mod phi(n)), multiplicative inverse
+
+  Euler Totient: Phi
+  Find relative prime d for e: gcd
+  Modular multiplicative inverse: egcd
+  Encrypt/decrypt: modular exponentiation
+  Find d given e and n
+  CRT signatures, errors, factorize n using signatures
+
+  Rabin variant, e=2
+  Break system after finding message with E(m)=2
+  Break messages given ciphertexts and separate p's and q's (with given formula)
+  Speed up decryption using p and q
+  Find solutions for p/q-only ciphertexts
+
+Batch RSA
+  (Show how to) compute several modular exponentiations for a given coefficient
+  
+ElGamal
+  Finite field / binary field
+  Compute public key for secret key in given field
+  Encrypt/decrypt in given field
+
+Fiat-Shamir identification protocol
+  Create a private key for user as trusted party
+  Role of prover, witness trusted party
+  Execute rounds
+
+Shamir's Secret Sharing Scheme (SSSS)
+  Set up shamir secret over given finite field with given threshold and secret
+  Show how users can reconstruct secrets from shares
+
+McEliece cryptosystem
+  Encrypt a message
+
+Schnoor identification protocol
+  Create public key in group using generator subgroup
+  Execute round to prove knowledge of secret
+
+Elliptic Curve Digital Signature Algorithm (ECDSA)
+  Show how signatures are validated
+  Show how to obtain secret given k in R = [k]P for a signature on a message
+  Compute secret using given signature/message pairs, field and order of base point
