@@ -35,9 +35,13 @@ Resulting in that one byte can potentially be different from the initial cipher-
 
 \subsection{Cipher-Block Chaining}
 \subsection{Cipher Feedback}
+This mode will create four blocks of cipher-texts. The first block will decrypt correctly into plain-text. The second block will produce the right block cipher encryption but this is XOR-ed with the corrupted cipher-text, which results in one bit of the second plain-text block to be corrupted. The corrupted cipher-text is then used to create block cipher encryption for the third block. This will result into 8-bits being potentially altered, which will be XOR-ed with the correct third cipher-text. Meaning that the third plain-text block has eight corrupted bits. The fourth cipher-text will be decrypted as normal. So in total nine bits may be different compared to the initial plain-text.
+
 \subsection{Output Feedback}
+This is similar to ECB-mode and CRT-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. The publicly known Initialization Vector is not corrupted so during the deciphering, the same bits are used as during the encryption. Therefore the XOR-operation with the second encryption block and the corrupted cipher-text will result in one bit being different from the initial plain-text.
+
 \subsection{Counter}
-This mode is similar to ECB-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. Since a public nonce and counter are used and these are not corrupted this will result in the same encryption bits. Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit might be different from the original plain-text.
+This mode is similar to ECB-mode and OFB-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. Since a public nonce and counter are used and since these are not corrupted this will result in the same encryption bits. Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit might be different from the original plain-text.
 
 
 %\bibliographystyle{plain}
