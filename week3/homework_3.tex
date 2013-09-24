@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\newenvironment{amatrix}[1]{%
+  \left(\begin{array}{@{}*{#1}{c}|c@{}}
+}{%
+  \end{array}\right)
+}
+
+\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002(s134674), s4092368 \\ Radboud University}
+\title{Cryptography 1, Homework 3}
+
+\begin{document}
+\maketitle
+\date
+
+\section{Question 1: Lookup-tables}
+AES starts with 128-bit block called the State-input, usually depicted as a 4x4-matrix. Each square of this matrix consist of 8-bits or 1 byte, represented in hexadecimal notation. 
+The SubBytes-step substitutes these values with the values in the S-Box. This S-Box is in itself a lookup-table, it has a mapping for all possible hexadecimal values. 
+When all of the original State-input is replaced with values from the S-Box we are left with a new 4x4-matrix. The ShiftRows-step will rotate rows two, three and four with one, two and three bytes respectively, but we will omit this for now.
+The MixColumns-step applies each column of this new matrix to a pre-defined matrix, using matrix multiplication. We can therefore link each value in the S-Box...
+
+
+
+
+\section{Question 2: Modes of Operation}
+
+We have a message of 64 bytes. This is 512 bits and because we use AES, we 128 bit blocks and thus a total of four blocks for this message.
+
+\subsection{Electronic Codebook}
+In this mode all four blocks are encrypted and decrypted independently, they do not depend on each other. So four perfectly encrypted cipher-texts are send out over the network one by one. Only with the second cipher-text one bit flips during transmission. Upon receipt of block one, three and four, AES decrypts them as normal and the plain-text is revealed. For the second block things will go a little differently. Upon the first reverse round, the AddRoundKey might change one bit by the XOR operation. ShiftRows does not do much, but SubBytes will link the 8-bit block with a completely wrong value. The following reverse rounds these 8-bits will be continuously linked to the wrong hexadecimal values.
+Resulting in that one byte can potentially be different from the initial cipher-text.
+
+\subsection{Cipher-Block Chaining}
+\subsection{Cipher Feedback}
+This mode will create four blocks of cipher-texts. The first block will decrypt correctly into plain-text. The second block will produce the right block cipher encryption but this is XOR-ed with the corrupted cipher-text, which results in one bit of the second plain-text block to be corrupted. The corrupted cipher-text is then used to create block cipher encryption for the third block. This will result into 8-bits being potentially altered, which will be XOR-ed with the correct third cipher-text. Meaning that the third plain-text block has eight corrupted bits. The fourth cipher-text will be decrypted as normal. So in total nine bits may be different compared to the initial plain-text.
+
+\subsection{Output Feedback}
+This is similar to ECB-mode and CRT-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. The publicly known Initialization Vector is not corrupted so during the deciphering, the same bits are used as during the encryption. Therefore the XOR-operation with the second encryption block and the corrupted cipher-text will result in one bit being different from the initial plain-text.
+
+\subsection{Counter}
+This mode is similar to ECB-mode and OFB-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. Since a public nonce and counter are used and since these are not corrupted this will result in the same encryption bits. Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit might be different from the original plain-text.
+
+
+%\bibliographystyle{plain}
+%\bibliography{\jobname} 
+
+\end{document}
