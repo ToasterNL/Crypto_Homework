@@ -17,7 +17,10 @@
 \date
 
 \section{Question 1: Lookup-tables}
-
+AES starts with 128-bit block called the State-input, usually depicted as a 4x4-matrix. Each square of this matrix consist of 8-bits or 1 byte, represented in hexadecimal notation. 
+The SubBytes-step substitutes these values with the values in the S-Box. This S-Box is in itself a lookup-table, it has a mapping for all possible hexadecimal values. 
+When all of the original State-input is replaced with values from the S-Box we are left with a new 4x4-matrix. The ShiftRows-step will rotate rows two, three and four with one, two and three bytes respectively, but we will omit this for now.
+The MixColumns-step ....
 
 
 \section{Question 2: Modes of Operation}
