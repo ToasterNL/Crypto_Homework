@@ -33,6 +33,11 @@ We have a message of 64 bytes. This is 512 bits and because we use AES, we 128 b
 In this mode all four blocks are encrypted and decrypted independently, they do not depend on each other. So four perfectly encrypted cipher-texts are send out over the network one by one. Only with the second cipher-text one bit flips during transmission. Upon receipt of block one, three and four, AES decrypts them as normal and the plain-text is revealed. For the second block things will go a little differently. Upon the first reverse round, the AddRoundKey might change one bit by the XOR operation. ShiftRows does not do much, but SubBytes will link the 8-bit block with a completely wrong value. The following reverse rounds these 8-bits will be continuously linked to the wrong hexadecimal values.
 Resulting in that one byte can potentially be different from the initial cipher-text.
 
+\subsection{Cipher-Block Chaining}
+\subsection{Cipher Feedback}
+\subsection{Output Feedback}
+\subsection{Counter}
+This mode is similar to ECB-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. Since a public nonce and counter are used and these are not corrupted this will result in the same encryption bits. Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit might be different from the original plain-text.
 
 
 %\bibliographystyle{plain}
