@@ -20,10 +20,18 @@
 AES starts with 128-bit block called the State-input, usually depicted as a 4x4-matrix. Each square of this matrix consist of 8-bits or 1 byte, represented in hexadecimal notation. 
 The SubBytes-step substitutes these values with the values in the S-Box. This S-Box is in itself a lookup-table, it has a mapping for all possible hexadecimal values. 
 When all of the original State-input is replaced with values from the S-Box we are left with a new 4x4-matrix. The ShiftRows-step will rotate rows two, three and four with one, two and three bytes respectively, but we will omit this for now.
-The MixColumns-step ....
+The MixColumns-step applies each column of this new matrix to a pre-defined matrix, using matrix multiplication. We can therefore link each value in the S-Box...
+
+
 
 
 \section{Question 2: Modes of Operation}
+
+We have a message of 64 bytes. This is 512 bits and because we use AES, we 128 bit blocks and thus a total of four blocks for this message.
+
+\subsection{Electronic Codebook}
+In this mode all four blocks are encrypted and decrypted independently, they do not depend on each other. So four perfectly encrypted cipher-texts are send out over the network one by one. Only with the second cipher-text one bit flips during transmission. Upon receipt of block one, three and four, AES decrypts them as normal and the plain-text is revealed. For the second block things will go a little differently. Upon the first reverse round, the AddRoundKey might change one bit by the XOR operation. ShiftRows does not do much, but SubBytes will link the 8-bit block with a completely wrong value. The following reverse rounds these 8-bits will be continuously linked to the wrong hexadecimal values.
+Resulting in that one byte can potentially be different from the initial cipher-text.
 
 
 
