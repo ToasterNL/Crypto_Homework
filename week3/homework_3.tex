@@ -35,8 +35,9 @@ We can now do 4 byte lookups into 4 different tables, while we take different in
 
 \section{Question 2: Modes of Operation}
 
-We have a message of 64 bytes. This is 512 bits and because we use AES, we 128 bit blocks and thus a total of four blocks for this message.
+We have a message of 64 bytes. This is 512 bits and because we use AES, we have 128 bit blocks and thus a total of four blocks for this message.
 
+\subsection{How many bits flip with AES?}
 AES is known to provide near-perfect diffusion in two rouds, and we can intuitively see that it is so.
 Applying an XOR does not affect the probability of a bit being 1 or 0; a bit flipped before XOR will result in a bit flipped after XOR.
 Substituting bytes with flipped bits through the S-Box has a varying effect depending on the other bits in a byte.
@@ -44,22 +45,28 @@ On average 4 bits are changed by a substitution, a minimum of 0 and a maximum of
 
 The row shifting operation does not by itself affect which bits are changed in the state, as it is only a change in the representation at byte level.
 Each byte in the state will be an element in a matrix which is multiplied by the mixcolumns matrix.
-This means that for each vector in the state the output will be a vector which has been multiplied by the coefficient in each row and the columns are added/XORed.
+This means that for each vector in the state the output will be a vector which has been multiplied by the coefficients in each multiplication matrix row and the columns are added/XORed.
 A coefficient of 1 will not change the bits in the state, a coefficient of 2 will shift them left by 1 bit position and a coefficient of 3 will shift, then add/XOR the previous unshifted value.
 
 Our flipped bit would propagate once at maximum for a straight-through or left shift wiring, and for the added XOR (to multiply by 3) we've already shown intuitively that it does not change the number of flipped bits.
-The magic happens when the bit is XORed to 4 other state bytes with other coefficients, resulting in 4 affected output bytes in the resulting vector.
+(Note that this results in 3 radically different bitstrings.)
+
+The magic happens when the bit is XORed to the bits in 4 other state bytes with other coefficients, resulting in 4 affected output bytes in the resulting vector.
 In the next iteration the 4 affected bytes from the last state are again part of the matrix multiplication, and (since they were selected from different columns using the ShiftRows step) will again provide a 4:1 diffusion, meaning every byte is affected.
 Meanwhile we will have also applied the S-Box twice to each byte, resulting in an average change of 8 bits per byte in total - we have total diffusion after the second round.
 
 This is then repeated for a few more rounds, with the number of bits affected in the state grows by at least 4 but possibly over 16, modulo 128.
 So potentially, all bits bits in a state are different after a full AES encryption or decryption.
+Of course this would imply that in that case the algorithm reduces to a a simple bitwise inversion, which we deem unlikely but can't rule out.
+
+If we assume perfect diffusion, on average for every affected bit there is a likelihood of one half for it to be flipped, so we think at least 64 state bits will be affected with high probability.
 
 % TODO
 
 \subsection{Electronic Codebook}
 In this mode all four blocks are encrypted and decrypted independently; they do not depend on each other.
 Thus, if a bit flips in the second block none of the other blocks are affected.
+Between 64 and 128 bits are corrupted.
 
 %So four perfectly encrypted cipher-texts are sent out over the network one by one.
 %Only with the second cipher-text block bit flips during transmission.
@@ -71,14 +78,30 @@ Thus, if a bit flips in the second block none of the other blocks are affected.
 %Resulting in that one byte can potentially be different from the initial cipher-text.
 
 \subsection{Cipher-Block Chaining}
+In this mode the encryption/decryption of the last block is used to operate on the next.
+The first block will decrypt correctly, the second will have 1 flipped bit, the third will have between 64 and 128 bits flipped and the fourth will again have between 64 and 128 bits flipped.
+In total between 129 and 257 bits are flipped.
+
 \subsection{Cipher Feedback}
-This mode will create four blocks of cipher-texts. The first block will decrypt correctly into plain-text. The second block will produce the right block cipher encryption but this is XOR-ed with the corrupted cipher-text, which results in one bit of the second plain-text block to be corrupted. The corrupted cipher-text is then used to create block cipher encryption for the third block. This will result into 8-bits being potentially altered, which will be XOR-ed with the correct third cipher-text. Meaning that the third plain-text block has eight corrupted bits. The fourth cipher-text will be decrypted as normal. So in total nine bits may be different compared to the initial plain-text.
+%This mode will create four blocks of cipher-texts.
+The first block will decrypt correctly into plain-text.
+The second iteration will produce the right block cipher encryption but this is XOR-ed with the corrupted ciphertext, which results in one bit of the second plain-text block to be corrupted.
+The corrupted ciphertext is then used to create the cipher output for the third block.
+This will result in between 64 and 128 bits being potentially altered, which will be XOR-ed with the correct third cipher-text.
+The fourth cipher-text will be decrypted as normal.
+So in total between 65 and 129 bits may be different compared to the initial plain-text.
 
 \subsection{Output Feedback}
-This is similar to ECB-mode and CRT-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. The publicly known Initialization Vector is not corrupted so during the deciphering, the same bits are used as during the encryption. Therefore the XOR-operation with the second encryption block and the corrupted cipher-text will result in one bit being different from the initial plain-text.
+This is similar to ECB-mode and CRT-mode.
+Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks.
+The publicly known Initialization Vector is not corrupted so during the deciphering, the same bits are used as during the encryption.
+Therefore the XOR-operation with the second encryption block and the corrupted cipher-text will result in exactly one bit being different from the initial plain-text.
 
 \subsection{Counter}
-This mode is similar to ECB-mode and OFB-mode. Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks. Since a public nonce and counter are used and since these are not corrupted this will result in the same encryption bits. Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit might be different from the original plain-text.
+This mode is similar to ECB-mode and OFB-mode.
+Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks.
+Since a public nonce and counter are used and since these are not corrupted this will result in the same encryption bits.
+Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit might be different from the original plain-text.
 
 
 %\bibliographystyle{plain}
