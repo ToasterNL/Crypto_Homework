@@ -302,8 +302,8 @@ Between 64 and 128 bits are corrupted.
 
 \subsection{Cipher-Block Chaining}
 In this mode the encryption/decryption of the last block is used to operate on the next.
-The first block will decrypt correctly, the second will have 1 flipped bit, the third will have between 64 and 128 bits flipped and the fourth will again have between 64 and 128 bits flipped.
-In total between 129 and 257 bits are flipped.
+The first block will decrypt correctly. The second block will have between 64 and 128 bits flipped, because the second cipher-text contains one corrupted bit and is used in the block cipher decryption. The third block will have one bit flipped. The correct cipher-text is used resulting in a correct block cipher decryption, but this XOR-ed with the corrupted second cipher-text. Thus one bit flipped in block three. The fourth block will decrypt as normal.
+So in total between 65 and 129 bits will be flipped.
 
 \subsection{Cipher Feedback}
 %This mode will create four blocks of cipher-texts.
