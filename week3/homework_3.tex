@@ -239,6 +239,7 @@ k_{j}
 \]
 
 To summarize: the four lookup tables are indexed S-Box outputs which are pre-multiplied by one of the four column vectors of the MixColumns matrix; they map one input byte to a 32-bit word of output.
+By working column-wise, we can apply the required ShiftRows step by simply selecting different input columns when combining output vectors into new columns.
 
 %The SubBytes-step substitutes these values with the values in the S-Box.
 %This S-Box can itself be viewed a lookup-table; it has a mapping for all possible byte values. 
