@@ -19,7 +19,7 @@
 \section{Question 1: Lookup-tables}
 This is explained wonderfully well in the original Rijndael paper in 5.2, \textit{Implementation aspects for 32-bit processor}, and we've borrowed part of their explanation of the tables they suggest here.
 AES has a 128-bit state block, which we can view as a 4x4-matrix of bytes.
-We can express the whole algorithm to substitute one column of the state as vector/matrix operations:
+We can express the whole algorithm to substitute one column of the state $a$ as vector/matrix operations:
 
 %\[ 
 %\begin{bmatrix}
@@ -129,7 +129,7 @@ k_{3,j} \\
 \end{bmatrix}
 \]
 
-Following the Rijndael-paper, the expression above can the transformed into a combination of vectors:
+Following the Rijndael-paper, the expression above can the transformed into a combination of vectors to form the output column $e$:
 
 \[
 \begin{bmatrix}
@@ -191,7 +191,8 @@ k_{3,j} \\
 \end{bmatrix}
 \]
 
-Now the $S \begin{bmatrix} a_{i,j} \\ \end{bmatrix}$ coefficients of these vectors are nothing more than a table lookup of $a_{i,j}$ in the S-Box. If we take every value in the S-Box and apply them to the four separate vectors, we can create four lookup tables:
+Now the $S \begin{bmatrix} a_{i,j} \\ \end{bmatrix}$ coefficients of these vectors are nothing more than a table lookup of $a_{i,j}$ in the S-Box.
+If we take every value in the S-Box and apply them to the four separate vectors, we can create four lookup tables:
 
 \[
 T_{0}[a] =
@@ -238,8 +239,9 @@ T_{3}[a_{3,j-C3}]
 k_{j}
 \]
 
-To summarize: the four lookup tables are indexed S-Box outputs which are pre-multiplied by one of the four column vectors of the MixColumns matrix; they map one input byte to a 32-bit word of output.
 By working column-wise, we can apply the required ShiftRows step by simply selecting different input columns when combining output vectors into new columns.
+
+To summarize: the four lookup tables are indexed S-Box outputs which are pre-multiplied by one of the four column vectors of the MixColumns matrix; they map one input byte to a 32-bit word of output.
 
 %The SubBytes-step substitutes these values with the values in the S-Box.
 %This S-Box can itself be viewed a lookup-table; it has a mapping for all possible byte values. 
