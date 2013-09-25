@@ -2,12 +2,12 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{hyperref}
-
-\newenvironment{amatrix}[1]{%
-  \left(\begin{array}{@{}*{#1}{c}|c@{}}
-}{%
-  \end{array}\right)
-}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%\newenvironment{amatrix}[1]{%
+%  \left(\begin{array}{@{}*{#1}{c}|c@{}}
+%}{%
+%  \end{array}\right)
+%}
 
 \author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002(s134674), s4092368 \\ Radboud University}
 \title{Cryptography 1, Homework 3}
@@ -17,20 +17,240 @@
 \date
 
 \section{Question 1: Lookup-tables}
-This is explained wonderfully well in the original Rijndael paper in 5.2, Implementation aspects for 32-bit processor.
+This is explained wonderfully well in the original Rijndael paper in 5.2, Implementation aspects for 32-bit processor. AES has a 128-bit state block, which we can view as a 4x4-matrix of bytes.
+We can express the RoundKeyAddition-step and the MixColumn-step in a series of vector/matrix multiplications:
 
-AES has a 128-bit state block, which we can view as a 4x4-matrix of bytes.
-The SubBytes-step substitutes these values with the values in the S-Box.
-This S-Box can itself be viewed a lookup-table; it has a mapping for all possible byte values. 
-When we do vector/matrix multiplication in MixColumns, we can compute 4 separate columns to add (or XOR, in Rijndael's $GF_2$ field) to get the multiplication result for 1 column vector.
-Therefore we will need a lookup table that gives us our substituted input with the desired coefficients for such vectors, and we want 4 different variations (orderings/rotations) of these vectors.
-We therefore have tables like:
+\[ 
+\begin{bmatrix}
+e_{0,j} \\
+e_{1,j} \\
+e_{2,j} \\
+e_{3,j} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+d_{0,j} \\
+d_{1,j} \\
+d_{2,j} \\
+d_{3,j} \\
+\end{bmatrix}
+\bigoplus
+\begin{bmatrix}
+k_{0,j} \\
+k_{1,j} \\
+k_{2,j} \\
+k_{3,j} \\
+\end{bmatrix}
+where
+\begin{bmatrix}
+d_{0,j} \\
+d_{1,j} \\
+d_{2,j} \\
+d_{3,j} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+02 & 03 & 01 & 01 \\
+01 & 02 & 03 & 01 \\
+01 & 01 & 02 & 03 \\
+03 & 01 & 01 & 02 \\
+\end{bmatrix}
+\begin{bmatrix}
+c_{0,j} \\
+c_{1,j} \\
+c_{2,j} \\
+c_{3,j} \\
+\end{bmatrix}
+\]
 
-\[ T_0[i] = (2,3,1,1) \cdot S[i] \]
+A similar thing can be done for the ShiftRow-step and the SubBytes-step:
+\[
+\begin{bmatrix}
+c_{0,j} \\
+c_{1,j} \\
+c_{2,j} \\
+c_{3,j} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_{0,j} \\
+b_{1,j-C1} \\
+b_{2,j-C2} \\
+b_{3,j-C3} \\
+\end{bmatrix}
+where
+b_{i,j} = S
+\begin{bmatrix}
+a_{i,j} \\
+\end{bmatrix}
+\]
 
-We almost forgot about the ShiftRows step.
-Because we now have tables that give us the desired vectors to translate a column into a sum of 4 vectors, we can sneak this step in here and do a lookup from a different columns to satisfy the ShiftRows step.
-We can now do 4 byte lookups into 4 different tables, while we take different input bytes at each row following the ShiftRows pattern, then add/XOR the results and get an output vector.
+These steps can then be combined in the following expression:
+
+\[
+\begin{bmatrix}
+e_{0,j} \\
+e_{1,j} \\
+e_{2,j} \\
+e_{3,j} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+02 & 03 & 01 & 01 \\
+01 & 02 & 03 & 01 \\
+01 & 01 & 02 & 03 \\
+03 & 01 & 01 & 02 \\
+\end{bmatrix}
+\begin{bmatrix}
+S
+\begin{bmatrix}
+a_{0,j} \\
+\end{bmatrix} \\
+S
+\begin{bmatrix}
+a_{1,j-C1} \\
+\end{bmatrix} \\
+S
+\begin{bmatrix}
+a_{2,j-C2} \\
+\end{bmatrix} \\
+S
+\begin{bmatrix}
+a_{3,j-C3} \\
+\end{bmatrix}\\
+\end{bmatrix}
+\bigoplus
+\begin{bmatrix}
+k_{0,j} \\
+k_{1,j} \\
+k_{2,j} \\
+k_{3,j} \\
+\end{bmatrix}
+\]
+
+Following the Rijndael-paper, the expression above can the transformed into a combination of vectors:
+
+\[
+\begin{bmatrix}
+e_{0,j} \\
+e_{1,j} \\
+e_{2,j} \\
+e_{3,j} \\
+\end{bmatrix}
+=
+S
+\begin{bmatrix}
+a_{0,j} \\
+\end{bmatrix}
+\begin{bmatrix}
+02 \\
+01 \\
+01 \\
+03 \\
+\end{bmatrix}
+\bigoplus
+S
+\begin{bmatrix}
+a_{1,j-C1} \\
+\end{bmatrix}
+\begin{bmatrix}
+03 \\
+02 \\
+01 \\
+01 \\
+\end{bmatrix}
+\bigoplus
+S
+\begin{bmatrix}
+a_{2,j-C2} \\
+\end{bmatrix}
+\begin{bmatrix}
+01 \\
+03 \\
+02 \\
+01 \\
+\end{bmatrix}
+\bigoplus
+S
+\begin{bmatrix}
+a_{3,j-C3} \\
+\end{bmatrix}
+\begin{bmatrix}
+01 \\
+01 \\
+03 \\
+02 \\
+\end{bmatrix}
+\bigoplus
+\begin{bmatrix}
+k_{0,j} \\
+k_{1,j} \\
+k_{2,j} \\
+k_{3,j} \\
+\end{bmatrix}
+\]
+
+Now the $S \begin{bmatrix} a_{i,j} \\ \end{bmatrix}$ coefficients of these vectors are nothing more than a table lookup of $a_{i,j}$ in the S-Box, which in itself be viewed as a lookup-table. If we take every value in the S-Box and apply them to the four separate vectors, we can create four lookup tables:
+
+\[
+T_{0}[a] =
+\begin{bmatrix}
+S[a] \cdot 02 \\
+S[a] \\
+S[a] \\
+S[a] \cdot 03 \\
+\end{bmatrix}
+T_{1}[a] =
+\begin{bmatrix}
+S[a] \cdot 03 \\
+S[a] \cdot 02\\
+S[a] \\
+S[a] \\
+\end{bmatrix}
+T_{2}[a] =
+\begin{bmatrix}
+S[a] \\
+S[a] \cdot 03 \\
+S[a] \cdot 02\\
+S[a] \\
+\end{bmatrix}
+T_{3}[a] =
+\begin{bmatrix}
+S[a] \\
+S[a] \\
+S[a] \cdot 03\\
+S[a] \cdot 02\\
+\end{bmatrix}
+\]
+
+One round of transformations will then be expressed as:
+
+\[
+e_{j} = T_{0}[a_{0,j}]
+\bigoplus
+T_{1}[a_{1,j-C1}]
+\bigoplus
+T_{2}[a_{2,j-C2}]
+\bigoplus
+T_{3}[a_{3,j-C3}]
+\bigoplus
+k_{j}
+\]
+
+To summarize and answers the question:
+The structure of the four lookup tables looks like a set of byte-values from the S-Box that all have been manipulated by the different steps in AES.
+
+%The SubBytes-step substitutes these values with the values in the S-Box.
+%This S-Box can itself be viewed a lookup-table; it has a mapping for all possible byte values. 
+%When we do vector/matrix multiplication in MixColumns, we can compute 4 separate columns to add (or XOR, in Rijndael's $GF_2$ field) to get the multiplication result for 1 column vector.
+%Therefore we will need a lookup table that gives us our substituted input with the desired coefficients for such vectors, and we want 4 different variations (orderings/rotations) of these vectors.
+%We therefore have tables like:
+
+%\[ T_0[i] = (2,3,1,1) \cdot S[i] \]
+
+%We almost forgot about the ShiftRows step.
+%Because we now have tables that give us the desired vectors to translate a column into a sum of 4 vectors, we can sneak this step in here and do a lookup from a different columns to satisfy the ShiftRows step.
+%We can now do 4 byte lookups into 4 different tables, while we take different input bytes at each row following the ShiftRows pattern, then add/XOR the results and get an output vector.
 
 
 \section{Question 2: Modes of Operation}
