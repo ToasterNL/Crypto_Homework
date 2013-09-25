@@ -17,21 +17,58 @@
 \date
 
 \section{Question 1: Lookup-tables}
-AES starts with 128-bit block called the State-input, usually depicted as a 4x4-matrix. Each square of this matrix consist of 8-bits or 1 byte, represented in hexadecimal notation. 
-The SubBytes-step substitutes these values with the values in the S-Box. This S-Box is in itself a lookup-table, it has a mapping for all possible hexadecimal values. 
-When all of the original State-input is replaced with values from the S-Box we are left with a new 4x4-matrix. The ShiftRows-step will rotate rows two, three and four with one, two and three bytes respectively, but we will omit this for now.
-The MixColumns-step applies each column of this new matrix to a pre-defined matrix, using matrix multiplication. We can therefore link each value in the S-Box...
+This is explained wonderfully well in the original Rijndael paper in 5.2, Implementation aspects for 32-bit processor.
 
+AES has a 128-bit state block, which we can view as a 4x4-matrix of bytes.
+The SubBytes-step substitutes these values with the values in the S-Box.
+This S-Box can itself be viewed a lookup-table; it has a mapping for all possible byte values. 
+When we do vector/matrix multiplication in MixColumns, we can compute 4 separate columns to add (or XOR, in Rijndael's $GF_2$ field) to get the multiplication result for 1 column vector.
+Therefore we will need a lookup table that gives us our substituted input with the desired coefficients for such vectors, and we want 4 different variations (orderings/rotations) of these vectors.
+We therefore have tables like:
 
+\[ T_0[i] = (2,3,1,1) \cdot S[i] \]
+
+We almost forgot about the ShiftRows step.
+Because we now have tables that give us the desired vectors to translate a column into a sum of 4 vectors, we can sneak this step in here and do a lookup from a different columns to satisfy the ShiftRows step.
+We can now do 4 byte lookups into 4 different tables, while we take different input bytes at each row following the ShiftRows pattern, then add/XOR the results and get an output vector.
 
 
 \section{Question 2: Modes of Operation}
 
 We have a message of 64 bytes. This is 512 bits and because we use AES, we 128 bit blocks and thus a total of four blocks for this message.
 
+AES is known to provide near-perfect diffusion in two rouds, and we can intuitively see that it is so.
+Applying an XOR does not affect the probability of a bit being 1 or 0; a bit flipped before XOR will result in a bit flipped after XOR.
+Substituting bytes with flipped bits through the S-Box has a varying effect depending on the other bits in a byte.
+On average 4 bits are changed by a substitution, a minimum of 0 and a maximum of 8.
+
+The row shifting operation does not by itself affect which bits are changed in the state, as it is only a change in the representation at byte level.
+Each byte in the state will be an element in a matrix which is multiplied by the mixcolumns matrix.
+This means that for each vector in the state the output will be a vector which has been multiplied by the coefficient in each row and the columns are added/XORed.
+A coefficient of 1 will not change the bits in the state, a coefficient of 2 will shift them left by 1 bit position and a coefficient of 3 will shift, then add/XOR the previous unshifted value.
+
+Our flipped bit would propagate once at maximum for a straight-through or left shift wiring, and for the added XOR (to multiply by 3) we've already shown intuitively that it does not change the number of flipped bits.
+The magic happens when the bit is XORed to 4 other state bytes with other coefficients, resulting in 4 affected output bytes in the resulting vector.
+In the next iteration the 4 affected bytes from the last state are again part of the matrix multiplication, and (since they were selected from different columns using the ShiftRows step) will again provide a 4:1 diffusion, meaning every byte is affected.
+Meanwhile we will have also applied the S-Box twice to each byte, resulting in an average change of 8 bits per byte in total - we have total diffusion after the second round.
+
+This is then repeated for a few more rounds, with the number of bits affected in the state grows by at least 4 but possibly over 16, modulo 128.
+So potentially, all bits bits in a state are different after a full AES encryption or decryption.
+
+% TODO
+
 \subsection{Electronic Codebook}
-In this mode all four blocks are encrypted and decrypted independently, they do not depend on each other. So four perfectly encrypted cipher-texts are send out over the network one by one. Only with the second cipher-text one bit flips during transmission. Upon receipt of block one, three and four, AES decrypts them as normal and the plain-text is revealed. For the second block things will go a little differently. Upon the first reverse round, the AddRoundKey might change one bit by the XOR operation. ShiftRows does not do much, but SubBytes will link the 8-bit block with a completely wrong value. The following reverse rounds these 8-bits will be continuously linked to the wrong hexadecimal values.
-Resulting in that one byte can potentially be different from the initial cipher-text.
+In this mode all four blocks are encrypted and decrypted independently; they do not depend on each other.
+Thus, if a bit flips in the second block none of the other blocks are affected.
+
+%So four perfectly encrypted cipher-texts are sent out over the network one by one.
+%Only with the second cipher-text block bit flips during transmission.
+%Upon receipt of block one, three and four, AES decrypts them as normal and the plain-text is revealed.
+%For the second block things will go a little differently.
+%Upon the first inverse round, the AddRoundKey might change one bit by the XOR operation.
+%ShiftRows does not do much, but SubBytes will link the 8-bit block with a completely wrong value.
+%The following reverse rounds these 8-bits will be continuously linked to the wrong hexadecimal values.
+%Resulting in that one byte can potentially be different from the initial cipher-text.
 
 \subsection{Cipher-Block Chaining}
 \subsection{Cipher Feedback}
