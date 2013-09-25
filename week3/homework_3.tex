@@ -17,76 +17,76 @@
 \date
 
 \section{Question 1: Lookup-tables}
-This is explained wonderfully well in the original Rijndael paper in 5.2, \textit{Implementation aspects for 32-bit processor}.
+This is explained wonderfully well in the original Rijndael paper in 5.2, \textit{Implementation aspects for 32-bit processor}, and we've borrowed part of their explanation of the tables they suggest here.
 AES has a 128-bit state block, which we can view as a 4x4-matrix of bytes.
-We can express the RoundKeyAddition-step and the MixColumn-step in a series of vector/matrix multiplications:
+We can express the whole algorithm to substitute one column of the keystate as vector/matrix operations:
 
-\[ 
-\begin{bmatrix}
-e_{0,j} \\
-e_{1,j} \\
-e_{2,j} \\
-e_{3,j} \\
-\end{bmatrix}
-=
-\begin{bmatrix}
-d_{0,j} \\
-d_{1,j} \\
-d_{2,j} \\
-d_{3,j} \\
-\end{bmatrix}
-\bigoplus
-\begin{bmatrix}
-k_{0,j} \\
-k_{1,j} \\
-k_{2,j} \\
-k_{3,j} \\
-\end{bmatrix}
-where
-\begin{bmatrix}
-d_{0,j} \\
-d_{1,j} \\
-d_{2,j} \\
-d_{3,j} \\
-\end{bmatrix}
-=
-\begin{bmatrix}
-02 & 03 & 01 & 01 \\
-01 & 02 & 03 & 01 \\
-01 & 01 & 02 & 03 \\
-03 & 01 & 01 & 02 \\
-\end{bmatrix}
-\begin{bmatrix}
-c_{0,j} \\
-c_{1,j} \\
-c_{2,j} \\
-c_{3,j} \\
-\end{bmatrix}
-\]
+%\[ 
+%\begin{bmatrix}
+%e_{0,j} \\
+%e_{1,j} \\
+%e_{2,j} \\
+%e_{3,j} \\
+%\end{bmatrix}
+%=
+%\begin{bmatrix}
+%d_{0,j} \\
+%d_{1,j} \\
+%d_{2,j} \\
+%d_{3,j} \\
+%\end{bmatrix}
+%\bigoplus
+%\begin{bmatrix}
+%k_{0,j} \\
+%k_{1,j} \\
+%k_{2,j} \\
+%k_{3,j} \\
+%\end{bmatrix}
+%where
+%\begin{bmatrix}
+%d_{0,j} \\
+%d_{1,j} \\
+%d_{2,j} \\
+%d_{3,j} \\
+%\end{bmatrix}
+%=
+%\begin{bmatrix}
+%02 & 03 & 01 & 01 \\
+%01 & 02 & 03 & 01 \\
+%01 & 01 & 02 & 03 \\
+%03 & 01 & 01 & 02 \\
+%\end{bmatrix}
+%\begin{bmatrix}
+%c_{0,j} \\
+%c_{1,j} \\
+%c_{2,j} \\
+%c_{3,j} \\
+%\end{bmatrix}
+%\]
 
-A similar thing can be done for the ShiftRow-step and the SubBytes-step:
-\[
-\begin{bmatrix}
-c_{0,j} \\
-c_{1,j} \\
-c_{2,j} \\
-c_{3,j} \\
-\end{bmatrix}
-=
-\begin{bmatrix}
-b_{0,j} \\
-b_{1,j-C1} \\
-b_{2,j-C2} \\
-b_{3,j-C3} \\
-\end{bmatrix}
-where
-b_{i,j} = S
-\begin{bmatrix}
-a_{i,j} \\
-\end{bmatrix}
-\]
+%A similar thing can be done for the ShiftRow-step and the SubBytes-step:
+%\[
+%\begin{bmatrix}
+%c_{0,j} \\
+%c_{1,j} \\
+%c_{2,j} \\
+%c_{3,j} \\
+%\end{bmatrix}
+%=
+%\begin{bmatrix}
+%b_{0,j} \\
+%b_{1,j-C1} \\
+%b_{2,j-C2} \\
+%b_{3,j-C3} \\
+%\end{bmatrix}
+%where
+%b_{i,j} = S
+%\begin{bmatrix}
+%a_{i,j} \\
+%\end{bmatrix}
+%\]
 
-These steps can then be combined in the following expression:
+%These steps can then be combined in the following expression:
 
 \[
 \begin{bmatrix}
@@ -224,7 +224,7 @@ S[a] \cdot 02\\
 \end{bmatrix}
 \]
 
-One round of transformations will then be expressed as:
+One column of output will then be expressed as:
 
 \[
 e_{j} = T_{0}[a_{0,j}]
@@ -238,7 +238,7 @@ T_{3}[a_{3,j-C3}]
 k_{j}
 \]
 
-To summarize: the four lookup tables are indexed S-Box outputs which are pre-multiplied by one of the four row vectors of the MixColumns matrix.
+To summarize: the four lookup tables are indexed S-Box outputs which are pre-multiplied by one of the four column vectors of the MixColumns matrix; they map one input byte to a 32-bit word of output.
 
 %The SubBytes-step substitutes these values with the values in the S-Box.
 %This S-Box can itself be viewed a lookup-table; it has a mapping for all possible byte values. 
@@ -282,9 +282,7 @@ Of course this would imply that in that case the algorithm reduces to a a simple
 If we assume perfect diffusion, on average for every affected bit there is a likelihood of one half for it to be flipped, so we think at least 64 state bits will be affected with high probability.
 
 We didn't account for reduction in $GF_2^8$ with the required polynomials making the multiplication much harder, or the fact that decryption in AES actually has different coefficients than encryption.
-The influence it may have is redundant, the polynomial reduction may only add more bits flipped but the minimum remains at one, so the total diffusion proof is unaffected.
-
-% TODO
+The influence it may have is redundant, the polynomial reduction may only add more bits flipped but the minimum remains at one, so the total diffusion property is unaffected.
 
 \subsection{Electronic Codebook}
 In this mode all four blocks are encrypted and decrypted independently; they do not depend on each other.
@@ -324,7 +322,7 @@ Therefore the XOR-operation with the second encryption block and the corrupted c
 This mode is similar to ECB-mode and OFB-mode.
 Blocks one, three and four will all be deciphered correctly, because there is no dependency on other blocks.
 Since a public nonce and counter are used and since these are not corrupted this will result in the same encryption bits.
-Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit might be different from the original plain-text.
+Because only one bit was flipped in the cipher-text and these are XOR-ed with the correct encryption bits, only one bit will be different from the original plain-text.
 
 
 %\bibliographystyle{plain}
