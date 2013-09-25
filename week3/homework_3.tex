@@ -17,7 +17,7 @@
 \date
 
 \section{Question 1: Lookup-tables}
-This is explained wonderfully well in the original Rijndael paper in 5.2, Implementation aspects for 32-bit processor.
+This is explained wonderfully well in the original Rijndael paper in 5.2, \textit{Implementation aspects for 32-bit processor}.
 
 AES has a 128-bit state block, which we can view as a 4x4-matrix of bytes.
 The SubBytes-step substitutes these values with the values in the S-Box.
@@ -48,7 +48,7 @@ Each byte in the state will be an element in a matrix which is multiplied by the
 This means that for each vector in the state the output will be a vector which has been multiplied by the coefficients in each multiplication matrix row and the columns are added/XORed.
 A coefficient of 1 will not change the bits in the state, a coefficient of 2 will shift them left by 1 bit position and a coefficient of 3 will shift, then add/XOR the previous unshifted value.
 
-Our flipped bit would propagate once at maximum for a straight-through or left shift wiring, and for the added XOR (to multiply by 3) we've already shown intuitively that it does not change the number of flipped bits.
+Our flipped bit would propagate exactly once for a straight-through or left shift wiring, and for the added XOR (to multiply by 3) we've already shown intuitively that it does not change the number of flipped bits.
 (Note that this results in 3 radically different bitstrings.)
 
 The magic happens when the bit is XORed to the bits in 4 other state bytes with other coefficients, resulting in 4 affected output bytes in the resulting vector.
@@ -60,6 +60,9 @@ So potentially, all bits bits in a state are different after a full AES encrypti
 Of course this would imply that in that case the algorithm reduces to a a simple bitwise inversion, which we deem unlikely but can't rule out.
 
 If we assume perfect diffusion, on average for every affected bit there is a likelihood of one half for it to be flipped, so we think at least 64 state bits will be affected with high probability.
+
+We didn't account for reduction in $GF_2^8$ with the required polynomials making the multiplication much harder, or the fact that decryption in AES actually has different coefficients than encryption.
+The influence it may have is redundant, the polynomial reduction may only add more bits flipped but the minimum remains at one, so the total diffusion proof is unaffected.
 
 % TODO
 
