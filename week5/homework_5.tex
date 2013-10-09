@@ -23,10 +23,38 @@ We find the exponents $A$ and $B$ by trying candidate values $i$ until $g^i = h_
 We can gain some speed by searching for both values while ranging over integer values for $i$ in one loop, and can do modular reduction on-the-fly rather than accumulating a large number.
 This would also hold for the real DH case.
 
+To calculate $Na$ we should do the following:
+
+\[
+Na \cdot g \equiv \mbox{234 mod 1009} 
+\]
+\[
+(Na \cdot g) \mbox{ mod 1009} = \mbox{234 mod 1009}
+\]
+\[
+(Na \cdot 123) \mbox{ mod 1009} = \mbox{234 mod 1009}
+\]
+To calculate $Nb$ we should do the following:
+\[
+Nb \cdot g \equiv \mbox{456 mod 1009} 
+\]
+\[
+(Nb \cdot g) \mbox{ mod 1009} = \mbox{456 mod 1009}
+\]
+\[
+(Nb \cdot 123) \mbox{ mod 1009} = \mbox{456 mod 1009}
+\]
+
 Using a Python script we obtain:
 \[A=248\]
 \[B=742\]
-\[Secret: 80\]
+
+
+The shared secret by A is: $(456*248)\mbox{ mod 1009}$
+The shared secret by B is: $(234*742)\mbox{ mod 1009}$
+
+Which both result in $80$.
+%\[Secret: 80\]
 
 \section{Diffie-Hellman in $F_{2^4}$}
 The order of the generators is $\varphi(2^4-1)$.
@@ -38,7 +66,22 @@ The order of the generators is $\varphi(2^4-1)$.
 % TODO reduce to F_{2^4}
 
 \section{Public Key Cryptosystem}
-% TODO
+\subsection{3a}
+\[M = (100 \cdot 103)-1=10299 \]
+\[e = 39 \cdot 10299 + 100 = 401761\]
+\[d = 61 \cdot 10299 + 103 = 525352\]
+\[n = ((401761 \cdot 525352)-1)/10299 = 20493829\]
+
+\[m'\equiv (525352*42) \mbox{ mod 20493829} = 1570955\]
+
+To check our answer:
+
+\[m\equiv (401761*1570955) \mbox{ mod 20493829} = 42\]
+
+Which is indeed c.
+
+
+\subsection{3b}
 We can see that $n$ is integer by rewriting the given equations:
 
 \[M=ab-1 \]
