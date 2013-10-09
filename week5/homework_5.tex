@@ -39,6 +39,16 @@ The order of the generators is $\varphi(2^4-1)$.
 
 \section{Public Key Cryptosystem}
 % TODO
+We can see that $n$ is integer by rewriting the given equations:
+
+\[M=ab-1 \]
+\[ed=(a'M+a)(b'M+b)\]
+\[ed=a'Mb'M + a'Mb + ab'M + ab \]
+\[ed-1=a'Mb'M + a'Mb + ab'M + ab-1 \]
+\[n=ed-1/M=a'Mb' + a'b  + ab' + (M/M) \]
+\[n=a'Mb' + a'b  + ab' + 1 \]
+\[n=a'b'ab - a'b' + a'b  + ab' + 1 \]
+Since $a, b, a'$ and $b'$ are all integers, $n$ is also integer.
 
 
 \end{document}
