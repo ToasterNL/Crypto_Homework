@@ -92,8 +92,7 @@ fedcba9876543210
 Leading to the answer $x^3 + x^2 + x$, which sage confirms.
 
 \begin{verbatim}
-sage: R=GF(2^4, name='x')
-sage: x=R.gen()
+sage: c=GF(2^4, name='x').gen()
 sage: x^11
 x^3 + x^2 + x
 \end{verbatim}
