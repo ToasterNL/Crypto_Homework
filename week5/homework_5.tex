@@ -72,8 +72,6 @@ Confirmation from sage:
 sage: R=GF(2^4, name='x')
 sage: R.modulus()
 x^4 + x + 1
-sage: F.<x> = GF(2)[]
-sage: R=GF(2^4,name='g', modulus=x^4+x+1, check_irreducible=True)
 \end{verbatim}
 
 Once we are sure we have the correct polynomial, we can do binary long division to reduce the value:
@@ -134,6 +132,7 @@ We can always get an integer modulus $n$ because $e$ and $d$ have $M$ as a commo
 Unfortunately we weren't able to form a complete proof showing $ed = 1 \pmod n$ by hand.
 
 The secret for the public key (118, 857) is the multiplicative inverse of 857 modulo 118, which is 99.
+An attempted proof follows:
 
 \[ e = a'M + a \]
 \[ d = b'M + b \]
