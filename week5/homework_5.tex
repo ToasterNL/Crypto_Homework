@@ -17,7 +17,7 @@
 \date
 
 \section{Diffie-Hellman variant}
-This DH variant uses addition instead of multiplication (or multiplication in stead of exponentiation).
+This DH variant uses addition instead of multiplication (or multiplication instead of exponentiation).
 Even though it's in a different group, this is still a Diffie-Hellman problem.
 We find the exponents $n_A$ and $n_B$ by trying candidate values $i$ until $g \cdot i = h_A \pmod p$ or $g \cdot i = h_B \pmod p$.
 We can gain some speed by searching for both values at the same time while ranging over integer values for $i$, and can do modular reduction on-the-fly rather than accumulating a large number.
