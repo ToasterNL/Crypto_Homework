@@ -145,7 +145,18 @@ An attempted proof follows:
 
 Missing steps for modular reduction of $ed$ in $n$.
 
-\[ ed = 1 \pmod n \]
+Applying sage:
+\begin{verbatim}
+sage: G=ZZ['a,b,ap,bp,m']
+sage: a,b,ap,bp,m = G.gens()
+sage: M=(a*b)-1
+sage: e=ap*M+a
+sage: d=bp*M+b
+sage: n=(e*d - 1) / M
+sage: gcd(e*d,n)
+1
+\end{verbatim}
 
+\[ ed = 1 \pmod n \]
 
 \end{document}
