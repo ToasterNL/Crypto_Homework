@@ -17,72 +17,108 @@
 \date
 
 \section{Diffie-Hellman variant}
-This DH variant uses addition in stead of multiplication (or multiplication in stead of exponentiation).
+This DH variant uses addition instead of multiplication (or multiplication in stead of exponentiation).
 Even though it's in a different group, this is still a Diffie-Hellman problem.
-We find the exponents $A$ and $B$ by trying candidate values $i$ until $g^i = h_A \pmod p$ or $g^i = h_B \pmod p$.
-We can gain some speed by searching for both values while ranging over integer values for $i$ in one loop, and can do modular reduction on-the-fly rather than accumulating a large number.
+We find the exponents $n_A$ and $n_B$ by trying candidate values $i$ until $g \cdot i = h_A \pmod p$ or $g \cdot i = h_B \pmod p$.
+We can gain some speed by searching for both values at the same time while ranging over integer values for $i$, and can do modular reduction on-the-fly rather than accumulating a large number.
 This would also hold for the real DH case.
 
-To calculate $Na$ we should do the following:
-
-\[
-Na \cdot g \equiv \mbox{234 mod 1009} 
-\]
-\[
-(Na \cdot g) \mbox{ mod 1009} = \mbox{234 mod 1009}
-\]
-\[
-(Na \cdot 123) \mbox{ mod 1009} = \mbox{234 mod 1009}
-\]
-To calculate $Nb$ we should do the following:
-\[
-Nb \cdot g \equiv \mbox{456 mod 1009} 
-\]
-\[
-(Nb \cdot g) \mbox{ mod 1009} = \mbox{456 mod 1009}
-\]
-\[
-(Nb \cdot 123) \mbox{ mod 1009} = \mbox{456 mod 1009}
-\]
-
 Using a Python script we obtain:
-\[A=248\]
-\[B=742\]
+\[n_A=248\]
+\[n_B=742\]
+
+And we can verify this is correct:
+
+%\[
+%g \cdot A \equiv \mbox{234 mod 1009} 
+%\]
+%\[
+%(Na \cdot g) \mbox{ mod 1009} = \mbox{234 mod 1009}
+%\]
+\[
+(123 \cdot 248) \mbox{ mod 1009} = \mbox{234 mod 1009}
+\]
+%To calculate $Nb$ we should do the following:
+%\[
+%g \cdot B \equiv \mbox{456 mod 1009} 
+%\]
+%\[
+%(Nb \cdot g) \mbox{ mod 1009} = \mbox{456 mod 1009}
+%\]
+\[
+(123 \cdot 742) \mbox{ mod 1009} = \mbox{456 mod 1009}
+\]
 
 
-The shared secret by A is: $(456*248)\mbox{ mod 1009}$
-The shared secret by B is: $(234*742)\mbox{ mod 1009}$
+The secret for A is then: $(456 \cdot 248)\mbox{ mod 1009}$, 
+and the secret for B is: $(234 \cdot 742)\mbox{ mod 1009}$.
 
-Which both result in $80$.
+Which both result in the shared secret $80$.
 %\[Secret: 80\]
 
 \section{Diffie-Hellman in $F_{2^4}$}
 The order of the generators is $\varphi(2^4-1)$.
 \[ \varphi(15) = (5-1)(3-1) = 8 \]
 
+%This means that there are 8 generators which generate the entire group.
+We simply fill in the values and reduce in $F(2)$.
 \[h_A = x^4 \]
 \[h_B = x^7 \]
 \[n = x^{11} \]
-% TODO reduce to F_{2^4}
 
-\section{Public Key Cryptosystem}
-\subsection{3a}
+We learned that the characteristic polynomial to reduce with cannot simply be determined for non-prime fields, but that we can start our tries with $x^n + ax + b$ for fields of size $p^n$.
+Confirmation from sage:
+\begin{verbatim}
+sage: R=GF(2^4, name='x')
+sage: R.modulus()
+x^4 + x + 1
+sage: F.<x> = GF(2)[]
+sage: R=GF(2^4,name='g', modulus=x^4+x+1, check_irreducible=True)
+\end{verbatim}
+
+Once we are sure we have the correct polynomial, we can do binary long division to reduce the value:
+
+\begin{verbatim}
+fedcba9876543210
+    100000000000
+    10011
+    000110000000
+       10011
+       010110000
+        10011
+        00101000
+          10011
+          001110
+\end{verbatim}
+
+Leading to the answer $x^3 + x^2 + x$, which sage confirms.
+
+\begin{verbatim}
+sage: R=GF(2^4, name='x')
+sage: x=R.gen()
+sage: x^11
+x^3 + x^2 + x
+\end{verbatim}
+
+\section{RSA variant}
+Another thing we recognize, this time it's RSA with multiplication instead of exponentiation.
+
+\subsection{}
 \[M = (100 \cdot 103)-1=10299 \]
 \[e = 39 \cdot 10299 + 100 = 401761\]
-\[d = 61 \cdot 10299 + 103 = 525352\]
+\[d = 51 \cdot 10299 + 103 = 525352\]
 \[n = ((401761 \cdot 525352)-1)/10299 = 20493829\]
 
-\[m'\equiv (525352*42) \mbox{ mod 20493829} = 1570955\]
+First we check that it actually works:
+\[m'\equiv (525352 \cdot 42) \mbox{ mod 20493829} = 1570955\]
+\[m\equiv (401761 \cdot 1570955) \mbox{ mod 20493829} = 42\]
 
-To check our answer:
-
-\[m\equiv (401761*1570955) \mbox{ mod 20493829} = 42\]
-
-Which is indeed c.
+Then decrypt our given $c$:
+\[ 401761 \cdot 42 \mbox{ mod 20493829} = 1570955 \]
 
 
-\subsection{3b}
-We can see that $n$ is integer by rewriting the given equations:
+\subsection{}
+We can show that $n$ is integer by rewriting the given equations:
 
 \[M=ab-1 \]
 \[ed=(a'M+a)(b'M+b)\]
@@ -91,7 +127,27 @@ We can see that $n$ is integer by rewriting the given equations:
 \[n=ed-1/M=a'Mb' + a'b  + ab' + (M/M) \]
 \[n=a'Mb' + a'b  + ab' + 1 \]
 \[n=a'b'ab - a'b' + a'b  + ab' + 1 \]
-Since $a, b, a'$ and $b'$ are all integers, $n$ is also integer.
+Since $a, b, a'$ and $b'$ are all chosen as integers, $n$ is also integer.
+%Since M represents the size of the group
+
+The system works because $d$ and $e$ are eachother's multiplicative inverses modulo $n$.
+We can always get an integer modulus $n$ because $e$ and $d$ have $M$ as a common factor.
+Unfortunately we weren't able to form a complete proof showing $ed = 1 \pmod n$ by hand.
+
+The secret for the public key (118, 857) is the modular inverse of 857 modulo 118, which is 99.
+
+\[ e = a'M + a \]
+\[ d = b'M + b \]
+\[ ed = a'Mb'M + a'Mb + ab'M + ab \]
+\[ n = ed-1/M \]
+\[ ed-1 = a'Mb'M + a'Mb + ab'M + ab -1 \]
+\[ ed-1 = a'Mb'M + a'Mb + ab'M + M \]
+\[ ed = a'Mb'M + a'Mb + ab'M + M + 1 \]
+\[ n =  a'b'M + a'b + ab' + 1 \]
+
+Missing steps for modular reduction of $ed$ in $n$.
+
+\[ ed = 1 \pmod n \]
 
 
 \end{document}
