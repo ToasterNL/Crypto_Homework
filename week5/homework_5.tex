@@ -153,7 +153,14 @@ sage: M=(a*b)-1
 sage: e=ap*M+a
 sage: d=bp*M+b
 sage: n=(e*d - 1) / M
+sage: n.parent()
+Fraction Field of Multivariate Polynomial Ring in a, b, ap, bp, m over Integer Ring
+sage: n
+a*b*ap*bp + b*ap + a*bp - ap*bp + 1
+sage: n=a*b*ap*bp + b*ap + a*bp - ap*bp + 1 # Reinterpret as integer polynomial
 sage: gcd(e*d,n)
+1
+sage: e*d % n
 1
 \end{verbatim}
 
