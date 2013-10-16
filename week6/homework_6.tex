@@ -103,5 +103,21 @@ This result in the following equation:
 \frac{3^{2^2} - 3^2}{2^2} = \frac{3^4 - 3^2}{4} = 18
 \]
 
+\section{Rabin test}
+\begin{verbatim}
+sage: x=ZZ['x'].0
+sage: f=x**121 + x**2 + 1
+sage: factor(121)
+11^2
+sage: h=(x^(2^11)-x) % f
+sage: gcd(f,h)
+1
+sage: root=x^(2^11)
+sage: ((root % f) * (root % f) - x) % f == 0
+False
+\end{verbatim}
+We can see that both factors of the leading term of $f$ are the same, so we need to do only one test with gcd on a divisor.
+We get around exponents of $2^{121}$ by working modulo $f$.
+We see that the polynomial is reducible.
 
 \end{document}
