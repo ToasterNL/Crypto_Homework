@@ -24,13 +24,13 @@
 To prove:
 \[ (x+y)^{p^n} = x^{p^n} + y^{p^n} \]
 Basis, $n=0$:
-\[ (x+y)^{p^0} = (x+y)^1 = x + y \]
+\[ (x+y)^{p^0} = (x+y)^1 = x + y = x^{p^0} + y^{p^0} \]
 
 Induction, $n=n+1$:
 \[ (x+y)^{p^n} = \sum_{k=0}^{p^n} {p^n \choose k} x^{p^n-k} y^{k}  \]
 \[ = {p^n \choose 0} x^{p^n} y^{0} + {p^n \choose 1} x^{p^n-1} y^{1} + {p^n \choose 2} x^{p^n-2} y^{2}~ \dots~{p^n \choose p^n-2} x^{2} y^{p^n-2} + {p^n \choose p^n-1} x^{1} y^{p^n-1} + {p^n \choose p^n} x^{0} y^{p^n} \]
 We note that the first and last terms are equal to $x^{p^n}$ and $y^{p^n}$ respectively, and every binomial coefficient in between is divisible by $p$.
-We know that fields with prime characteristics are isomorphic to integers modulo that prime, and this information lets us reduce these terms all at once.
+We know that fields with prime characteristics are isomorphic to integers modulo that prime, and this information lets us reduce these middle terms all at once.
 \[ = x^{p^n} + y^{p^n}~\square \]
 
 %Basis, $n=1$:
