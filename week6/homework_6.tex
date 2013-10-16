@@ -33,9 +33,9 @@ We know that fields with prime characteristics are isomorphic to integers modulo
 Induction, $n=n+1$:
 \[ (x+y)^{p^{n+1}} = x^{p^{n+1}} + y^{p^{n+1}} \]
 Take out a factor to resemble the basis:
-\[ (x+y)^{p} \cdot (x+y)^{p^{n}} = x^{p} \cdot x^{p^{n}} + y^{p} \cdot y^{p^{n}} \]
+\[ (x+y)^{p} \cdot (x+y)^{p^{n}} = x^{p^{n+1}} + y^{p^{n+1}} \]
 Apply induction hypothesis to left side twice: 
-\[ (x^p+y^p) \cdot (x^{p^n} + y^{p^n}) = x^{p} \cdot x^{p^{n}} + y^{p} \cdot y^{p^{n}} \]
+\[ (x^p+y^p) \cdot (x^{p^n} + y^{p^n}) = x^{p^{n+1}} + y^{p^{n+1}}\]
 
 
 \end{document}
