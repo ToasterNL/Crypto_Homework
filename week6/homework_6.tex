@@ -43,8 +43,8 @@ More generally, we can expand this for all $n$ as follows:
 $(x+1)^n = (x^n+1) = (x+1)^{(n-2)} \cdot (x+1)^2 $, since we already established that $(x+1)^2$ results in 0, everything will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
 
 Even more generally, we can always construct a number $n = x^{n-1} + \frac{1}{x}$ so that $nx = x^n + 1 = 0 \pmod{x^n+1}$.
-Since we are working in $\mathbb{F}_2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $x^n+1$.
-To show multiplicative inverses for $x$ always exist we need to show that $gcd(x,x^n+1) = 1$, which follows from $x^n = 0 \pmod x$, so the GCD is 1 and thus an inverse exists.
+Since we are working in a group, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $x^n+1$.
+To show multiplicative inverses for $x$ always exist we need to show that $gcd(x,x^n+1) = 1$, which follows from $x^n = 0 \pmod x$, so the GCD is 1 and thus an inverse exists, and thus we can always find a non-zero element that gives zero when multiplied by x, and thus R is not a field.
 
 \section{Prove interesting property}
 
