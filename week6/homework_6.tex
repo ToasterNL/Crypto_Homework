@@ -17,7 +17,7 @@
 \date
 
 \section{Non-field}
-We can read this question as asking us to find two elements
+We can read this question as asking us to find two nonzero elements that result in zero when multiplied.
 We weren't sure if this question is posed in concreto or in abstracto.
 Let's start with a concrete example:
 
@@ -37,6 +37,10 @@ $x+1$ & $x+1$ & $x+1$ & $0$ \\
 
 For $(x+1)^2$ we find $x^2+2x+1$, which in $\mathbb{F}_2$ results in $x^2+1 = 0 \pmod{x^2+1} $.
 This shows that we \emph{do} get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $\mathbb{R}$ is not a field.
+
+We can expand this for all $n$ as follows:
+
+$(x+1)^n = (x^n+1) = (x+1)^{(n-2)} \cdot (x+1)^2 $, since we already established that $(x+1)^2$ results in 0, everything will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
 
 More generally, we can always construct a number $n = x^{n-1} + \frac{1}{x}$ so that $nx = x^n + 1 = 0 \pmod{x^n+1}$. We believe $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $x^n+1$.
 
