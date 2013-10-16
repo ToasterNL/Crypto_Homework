@@ -17,7 +17,25 @@
 \date
 
 \section{Non-field}
-%We can read this question as asking us to find two elements 
+%We can read this question as asking us to find two elements
+If we take $n=2$, we have the function $(x+1)^2$. This results in $x^2+2x+1$, which in $\mathbb{F}_2$ results in $x^2+2x+1 \mbox{ mod } 2 = x^2+1$.
+
+If we put this in a table for multiplication we get the following:
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+$\cdot$ & $0$ & $1$ & $x$ & $x+1$ \\ 
+\hline 
+$0$ & $0$ & $0$ & $0$ & $0$ \\ 
+\hline 
+$1$ & $0$ & $1$ & $x$ & $x+1$ \\ 
+\hline 
+$x$ & $0$ & $x$ & $1$ & $x+1$ \\ 
+\hline 
+$x+1$ & $0$ & $x+1$ & $x+1$ & $0$ \\ 
+\hline 
+\end{tabular}
+
+This shows that we do get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $\mathbb{R}$ is not a field.
 
 \section{Prove interesting property}
 
@@ -56,5 +74,24 @@ We feel like we may be skipping a step here, but know that in fields we can mult
 &= x^{p^{n+1}} + y^{p^{n+1}}~\square.
 \end{aligned}
 \end{equation*}
+
+\section{Compute $N_3(4)$} 
+
+We have a .pdf online that makes this problem very easy to compute.
+\footnote{\url{http://www.math.umn.edu/~garrett/coding/Overheads/21_counting.pdf}}
+
+The following formula is used:
+
+\[
+\frac{p^{q^2} - p^q}{q^2}
+\]
+
+where $p$ is the field, in this case $3$, $q$ is the degree squared in this case $2$.
+This result in the following equation:
+
+\[
+\frac{3^{2^2} - 3^2}{2^2} = \frac{3^4 - 3^2}{4} = 18
+\]
+
 
 \end{document}
