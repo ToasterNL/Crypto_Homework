@@ -17,25 +17,28 @@
 \date
 
 \section{Non-field}
-%We can read this question as asking us to find two elements
-If we take $n=2$, we have the function $(x+1)^2$. This results in $x^2+2x+1$, which in $\mathbb{F}_2$ results in $x^2+2x+1 \mbox{ mod } 2 = x^2+1$.
+We can read this question as asking us to find two elements
+We weren't sure if this question is posed in concreto or in abstracto.
+Let's start with a concrete example:
 
-If we put this in a table for multiplication we get the following:
-\begin{tabular}{|c|c|c|c|c|}
+We choose $n=2$, and draw a table for multiplication:
+
+\begin{tabular}{|c|c|c|c|}
 \hline 
-$\cdot$ & $0$ & $1$ & $x$ & $x+1$ \\ 
+$\cdot$ & $1$ & $x$ & $x+1$ \\ 
 \hline 
-$0$ & $0$ & $0$ & $0$ & $0$ \\ 
+$1$ & $1$ & $x$ & $x+1$ \\ 
 \hline 
-$1$ & $0$ & $1$ & $x$ & $x+1$ \\ 
+$x$ & $x$ & $1$ & $x+1$ \\ 
 \hline 
-$x$ & $0$ & $x$ & $1$ & $x+1$ \\ 
-\hline 
-$x+1$ & $0$ & $x+1$ & $x+1$ & $0$ \\ 
+$x+1$ & $x+1$ & $x+1$ & $0$ \\ 
 \hline 
 \end{tabular}
 
-This shows that we do get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $\mathbb{R}$ is not a field.
+For $(x+1)^2$ we find $x^2+2x+1$, which in $\mathbb{F}_2$ results in $x^2+1 = 0 \pmod{x^2+1} $.
+This shows that we \emph{do} get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $\mathbb{R}$ is not a field.
+
+More generally, we can always construct a number $n = x^{n-1} + \frac{1}{x}$ so that $nx = x^n + 1 = 0 \pmod{x^n+1}$. We believe $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $x^n+1$.
 
 \section{Prove interesting property}
 
@@ -77,7 +80,7 @@ We feel like we may be skipping a step here, but know that in fields we can mult
 
 \section{Compute $N_3(4)$} 
 
-We have a .pdf online that makes this problem very easy to compute.
+We have found a .pdf online that makes this problem very easy to compute.
 \footnote{\url{http://www.math.umn.edu/~garrett/coding/Overheads/21_counting.pdf}}
 
 The following formula is used:
