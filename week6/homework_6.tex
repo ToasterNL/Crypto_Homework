@@ -26,19 +26,11 @@ To prove:
 Basis, $n=0$:
 \[ (x+y)^{p^0} = (x+y)^1 = x + y = x^{p^0} + y^{p^0} \]
 
-Induction, $n=n+1$:
-\[ (x+y)^{p^n} = \sum_{k=0}^{p^n} {p^n \choose k} x^{p^n-k} y^{k}  \]
-\[ = {p^n \choose 0} x^{p^n} y^{0} + {p^n \choose 1} x^{p^n-1} y^{1} + {p^n \choose 2} x^{p^n-2} y^{2}~ \dots~{p^n \choose p^n-2} x^{2} y^{p^n-2} + {p^n \choose p^n-1} x^{1} y^{p^n-1} + {p^n \choose p^n} x^{0} y^{p^n} \]
-We note that the first and last terms are equal to $x^{p^n}$ and $y^{p^n}$ respectively, and every binomial coefficient in between is divisible by $p$.
-We know that fields with prime characteristics are isomorphic to integers modulo that prime, and this information lets us reduce these middle terms all at once.
-\[ = x^{p^n} + y^{p^n}~\square \]
-
-%Basis, $n=1$:
-%\[ (x+y)^p = \sum_{k=0}^{p} {p \choose k} x^{p-k} y^{k}  \]
-%\[ = {p \choose 0} x^{p} y^{0} + {p \choose 1} x^{p-1} y^{1} + {p \choose 2} x^{p-2} y^{2}~ \dots~{p \choose p-2} x^{2} y^{p-2} + {p \choose p-1} x^{1} y^{p-1} + {p \choose p} x^{0} y^{p} \]
-%We note that the first and last terms are equal to $x^p$ and $y^p$ respectively, and every binomial coefficient in between is divisible by $p$.
-%We know that fields with prime characteristics are isomorphic to integers modulo that prime, and this information lets us reduce these terms all at once.
-%\[ = x^{p} + y^{p} \pmod p. \]
+Basis, $n=1$:
+\[ (x+y)^p = \sum_{k=0}^{p} {p \choose k} x^{p-k} y^{k}  \]
+\[ = {p \choose 0} x^{p} y^{0} + {p \choose 1} x^{p-1} y^{1} + {p \choose 2} x^{p-2} y^{2}~ \dots~{p \choose p-2} x^{2} y^{p-2} + {p \choose p-1} x^{1} y^{p-1} + {p \choose p} x^{0} y^{p} \]
+We note that the first and last terms are equal to $x^p$ and $y^p$ respectively, and every binomial coefficient in between is divisible by $p$, which means that these middle terms go to zero modulo $p$.
+\[ = x^{p} + y^{p} \pmod p. \]
 
 %Induction, $n=n+1$:
 %\begin{equation}
@@ -50,5 +42,19 @@ We know that fields with prime characteristics are isomorphic to integers modulo
 %\end{aligned}
 %\end{equation}
 
+Induction, $n=n+1$:
+\begin{equation*}
+\begin{aligned}
+(x+y)^{p^{n+1}} &= (x+y)^p \cdot (x+y)^{p^n} \\
+&= (x^p+y^p) \cdot (x^{p^n}+y^{p^n}) \\
+\end{aligned}
+\end{equation*}
+We feel like we may be skipping a step here, but know that in fields we can multiply polynomials like vectors:
+\begin{equation*}
+\begin{aligned}
+&= x^p x^{p^n} + y^p y^{p^n} \\
+&= x^{p^{n+1}} + y^{p^{n+1}}~\square.
+\end{aligned}
+\end{equation*}
 
 \end{document}
