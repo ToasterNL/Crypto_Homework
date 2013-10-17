@@ -43,16 +43,17 @@ More generally, we can expand this for all $n$ as follows:
 $(x+1)^n = (x^n+1) = (x+1)^{(n-2)} \cdot (x+1)^2 $, since we already established that $(x+1)^2$ results in 0, everything will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
 
 Even more generally, we can always construct a number $z = x^{n-1} + \frac{1}{x}$ so that $zx = x^n + 1 = 0 \pmod{x^n+1}$.
-Since we are working with a multiplicative (non-)field of characteristic $2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $2$.
+Since we are working with a (non-)field of characteristic $2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $2$.
 To show multiplicative inverses for $x$ always exist we need to show that it is coprime to the field characteristic 2, so $gcd(x,2) = 1$, which follows from the primality of 2.
-Every $n$ is coprime to 2 and thus an inverse exists, and thus we can always find a non-zero element that gives zero when multiplied by $x$, and thus $\mathbb{R}$ is not a field.
+Every $x$ is coprime to 2 and thus an inverse exists, and thus we can always find an element $z$ that gives zero when multiplied by $x$. This element $z$ is always non-zero because it can be constructed within the (non-)field, and thus $\mathbb{R}$ is never a field because we can construct zero by multiplying two non-zero values within it.
 
 \section{Prove interesting property}
 
+We already can see that this is true, because $p^n$ is the order of the group, and exponentiation by the group order works like the identity function.
 To prove:
 \[ (x+y)^{p^n} = x^{p^n} + y^{p^n} \]
 Basis, $n=0$:
-\[ (x+y)^{p^0} = (x+y)^1 = x + y = x^{p^0} + y^{p^0} \]
+\[ (x+y)^{p^0} = (x+y)^1 = x + y = x^{p^0} + y^{p^0}. \]
 
 Basis, $n=1$:
 \[ (x+y)^p = \sum_{k=0}^{p} {p \choose k} x^{p-k} y^{k}  \]
@@ -73,15 +74,43 @@ We note that the first and last terms are equal to $x^p$ and $y^p$ respectively,
 Induction, $n=n+1$:
 \begin{equation*}
 \begin{aligned}
-(x+y)^{p^{n+1}} &= (x+y)^p \cdot (x+y)^{p^n} \\
-&= (x^p+y^p) \cdot (x^{p^n}+y^{p^n}) \\
-\end{aligned}
-\end{equation*}
-We feel like we may be skipping a step here, but know that in fields we can multiply polynomials like vectors:
-\begin{equation*}
-\begin{aligned}
-&= x^p x^{p^n} + y^p y^{p^n} \\
-&= x^{p^{n+1}} + y^{p^{n+1}}~\square.
+%(x+y)^{p^{n+1}} &= x^{p^{n+1}}+y^{p^{n+1}} \\
+%(x+y)^p (x+y)^{p^{n}} &= x^{p^{n+1}}+y^{p^{n+1}} \\
+%(x^p+y^p) (x^{p^{n}}+y^{p^{n}}) &= x^{p^{n+1}}+y^{p^{n+1}}~(IH) \\
+%\text{Applied Fermat's little theorem:} \\
+%(x+y) (x^{p^{n}}+y^{p^{n}}) &= x^{p^{n+1}}+y^{p^{n+1}}~\pmod{p} \\
+%\text{Applied Frobenius automorphism:} \\
+%(x+y) (x+y) &= x^{1+1}+y^{1+1}~\pmod{p} \\
+%(x+y)^2 &= x^{2}+y^{2}~\pmod{p} \\
+%--
+%(x+y)^{p^{n}} &= (x+y)^{p^n} \\
+%&= (x+y)^p \cdot (x+y) \\
+%&= (x+y)^{p+1} \\
+(x+y)^{p^{n}} &= (x^{p^n}+y^{p^n})~\text{(IH)} \\
+((x+y)^{p^{n}})^p &= (x^{p^n}+y^{p^n})^p \\
+((x+y)^{p^{n}})^p &= (x^{p^n})^p+(y^{p^n})^p~\text{(Basis)}\\
+(x+y)^{p^{n+1}} &= x^{p^{n+1}}+y^{p^{n+1}}.~\square\\
+%&= x^{p^{n+1}}+y^p \cdot (x^{p^n}+y^{p^n}) \\
+%&= (x+y)^p \cdot (x^{p^n}+y^{p^n}) \\
+%&= (x^{p+1}+y^{p+1})~(IH) \\
+%&= (x^{p+1}+y^{p+1})^{p^n} \\
+%&= (x^{p^{n+1}+p^n}+y^{p^{n+1}+p^n}) \\
+%(x+y)^{p^{n+1}} &= x^{p^{n+1}}+y^{p^{n+1}} + y^p x^{p^n} + x^p y^{p^n} \\
+%(x+y)^{p^{n+1}} &= x^{p^{n+1}}+y^{p^{n+1}} + y^p x^{p^n} + x^p y^{p^n} \\
+%&= x^{p^{n+1}}+y^{p^{n+1}} + y^p x + x^p y \\
+%&= (x^p+y^p) \cdot (x^{p^n}+y^{p^n}) \\
+%&= x^p x^{p^n} + y^p x^{p^n} + x^p y^{p^n} + y^p y^{p^n} \\
+%&= x^p x + y^p x + x^p y + y^p y \\
+%&= x(x^{p} + y^p) + y (x^p + y^p) \\
+%&= x(x+ y)^p + y (x+y)^p \\
+%&= (x+y)(x+ y)^p\\
+%&= x^p x^{p^n} + y^p y^{p^n} \\
+%&= x^{p^{n+1}} + y^{p^{n+1}}.~\square
+%%\end{aligned}
+%%\end{equation*}
+%%We feel like we may be skipping a step here, but know that in fields we can multiply polynomials like vectors:
+%%\begin{equation*}
+%%\begin{aligned}
 \end{aligned}
 \end{equation*}
 
@@ -97,7 +126,7 @@ The following formula is used:
 \]
 
 where $p$ is the field, in this case $3$, $q$ is the degree squared in this case $2$.
-This result in the following equation:
+This results in the following equation:
 
 \[
 \frac{3^{2^2} - 3^2}{2^2} = \frac{3^4 - 3^2}{4} = 18
