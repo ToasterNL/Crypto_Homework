@@ -17,7 +17,7 @@
 \date
 
 \section{Non-field}
-We can read this question as asking us to find two nonzero elements that result in zero when multiplied.
+We can read this question as asking us to find two non-zero elements that result in zero when multiplied.
 %We weren't sure if this question is posed in concreto or in abstracto.
 Let's start with a concrete example.
 
@@ -36,16 +36,27 @@ $x+1$ & $x+1$ & $x+1$ & $0$ \\
 \end{tabular}
 
 For $(x+1)^2$ we find $x^2+2x+1$, which in $\mathbb{F}_2$ results in $x^2+1 = 0 \pmod{x^2+1} $.
-This shows that we \emph{do} get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $\mathbb{R}$ is not a field in this case.
+This shows that we \emph{do} get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $R$ is not a field in this case.
+%More generally, we can expand this for all $n$ as follows:
 
-More generally, we can expand this for all $n$ as follows:
+%\[(x^n+1) = (x^{(n-2)}+1) \cdot (x^2+1)\]
+%\[(x+1)^n = (x+1)^{(n-2)} \cdot (x+1)^2\]
+%Since we already established that $(x+1)^2$ results in 0, every such construction will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
+%Since these are clearly constructible in $\mathbb{F}_2$ and are non-zero, yet every such construction will yield zero after reduction modulo $f(x)$, this shows $R$ is not a field.
 
-$(x+1)^n = (x+1)^{(n-2)} \cdot (x+1)^2 $, and since we already established that $(x+1)^2$ results in 0, everything will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
-
-%Even more generally, we can always construct a number $z = x^{n-1} + \frac{1}{x}$ so that $zx = x^n + 1 = 0 \pmod{x^n+1}$.
-%Since we are working within a (non-)field of characteristic $2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $2$.
-%To show that non-zero multiplicative inverses for $x$ always exist we need to show that it is coprime to the field characteristic 2, so $gcd(x,2) = 1$, which follows from the primality of 2.
-%Every $x$ is coprime to 2 and thus an inverse exists, and thus we can always find an element $z$ that gives zero when multiplied by $x$. This element $z$ is always non-zero because it can be constructed from non-zero elements within the (non-)field, and thus $\mathbb{R}$ is never a field because we can construct zero by multiplying two non-zero elements within it.
+More generally, we can always construct a two polynomials that factor $x^n+1$:
+\[
+g = x^{n/2} + 1 \]
+\[
+ h = x^{n/2} + 1
+ \] so that
+ \[
+	 gh = x^n + 1~\text{in $\mathbb{F}_2$}
+ \]
+ and
+ \[
+	 gh = x^n + 1 = 0 \pmod{x^n+1}
+\]
 
 \section{Prove interesting property}
 
