@@ -36,20 +36,19 @@ $x+1$ & $x+1$ & $x+1$ & $0$ \\
 \end{tabular}
 
 For $(x+1)^2$ we find $x^2+2x+1$, which in $\mathbb{F}_2$ results in $x^2+1 = 0 \pmod{x^2+1} $.
-This shows that we \emph{do} get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $\mathbb{R}$ is not a field.
+This shows that we \emph{do} get $0$ when we multiply a non-zero element with another non-zero element for $n=2$. Thus $\mathbb{R}$ is not a field in this case.
 
 More generally, we can expand this for all $n$ as follows:
 
 $(x+1)^n = (x^n+1) = (x+1)^{(n-2)} \cdot (x+1)^2 $, since we already established that $(x+1)^2$ results in 0, everything will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
 
 Even more generally, we can always construct a number $z = x^{n-1} + \frac{1}{x}$ so that $zx = x^n + 1 = 0 \pmod{x^n+1}$.
-Since we are working with a (non-)field of characteristic $2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $2$.
+Since we are working within a (non-)field of characteristic $2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $2$.
 To show multiplicative inverses for $x$ always exist we need to show that it is coprime to the field characteristic 2, so $gcd(x,2) = 1$, which follows from the primality of 2.
 Every $x$ is coprime to 2 and thus an inverse exists, and thus we can always find an element $z$ that gives zero when multiplied by $x$. This element $z$ is always non-zero because it can be constructed within the (non-)field, and thus $\mathbb{R}$ is never a field because we can construct zero by multiplying two non-zero values within it.
 
 \section{Prove interesting property}
 
-We already can see that this is true, because $p^n$ is the order of the group, and exponentiation by the group order works like the identity function.
 To prove:
 \[ (x+y)^{p^n} = x^{p^n} + y^{p^n} \]
 Basis, $n=0$:
@@ -134,8 +133,8 @@ This results in the following equation:
 
 \section{Rabin test}
 \begin{verbatim}
-sage: x=ZZ['x'].0
-sage: f=x**121 + x**2 + 1
+sage: R.<x> = GF(2)[]
+sage: f=x^121 + x^2 + 1
 sage: factor(121)
 11^2
 sage: h=(x^(2^11)-x) % f
