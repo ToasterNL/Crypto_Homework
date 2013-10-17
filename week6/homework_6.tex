@@ -18,8 +18,8 @@
 
 \section{Non-field}
 We can read this question as asking us to find two nonzero elements that result in zero when multiplied.
-We weren't sure if this question is posed in concreto or in abstracto.
-Let's start with a concrete example:
+%We weren't sure if this question is posed in concreto or in abstracto.
+Let's start with a concrete example.
 
 We choose $n=2$, and draw a table for multiplication:
 
@@ -40,12 +40,12 @@ This shows that we \emph{do} get $0$ when we multiply a non-zero element with an
 
 More generally, we can expand this for all $n$ as follows:
 
-$(x+1)^n = (x^n+1) = (x+1)^{(n-2)} \cdot (x+1)^2 $, since we already established that $(x+1)^2$ results in 0, everything will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
+$(x+1)^n = (x+1)^{(n-2)} \cdot (x+1)^2 $, and since we already established that $(x+1)^2$ results in 0, everything will result in 0. Therefore $\mathbb{R}$ is not a field for all $n$.
 
-Even more generally, we can always construct a number $z = x^{n-1} + \frac{1}{x}$ so that $zx = x^n + 1 = 0 \pmod{x^n+1}$.
-Since we are working within a (non-)field of characteristic $2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $2$.
-To show multiplicative inverses for $x$ always exist we need to show that it is coprime to the field characteristic 2, so $gcd(x,2) = 1$, which follows from the primality of 2.
-Every $x$ is coprime to 2 and thus an inverse exists, and thus we can always find an element $z$ that gives zero when multiplied by $x$. This element $z$ is always non-zero because it can be constructed from non-zero elements within the (non-)field, and thus $\mathbb{R}$ is never a field because we can construct zero by multiplying two non-zero elements within it.
+%Even more generally, we can always construct a number $z = x^{n-1} + \frac{1}{x}$ so that $zx = x^n + 1 = 0 \pmod{x^n+1}$.
+%Since we are working within a (non-)field of characteristic $2$, $\frac{1}{x}$ should then be interpreted as the multiplicative inverse of $x$ modulo $2$.
+%To show that non-zero multiplicative inverses for $x$ always exist we need to show that it is coprime to the field characteristic 2, so $gcd(x,2) = 1$, which follows from the primality of 2.
+%Every $x$ is coprime to 2 and thus an inverse exists, and thus we can always find an element $z$ that gives zero when multiplied by $x$. This element $z$ is always non-zero because it can be constructed from non-zero elements within the (non-)field, and thus $\mathbb{R}$ is never a field because we can construct zero by multiplying two non-zero elements within it.
 
 \section{Prove interesting property}
 
@@ -53,7 +53,6 @@ To prove:
 \[ (x+y)^{p^n} = x^{p^n} + y^{p^n} \]
 Basis, $n=0$:
 \[ (x+y)^{p^0} = (x+y)^1 = x + y = x^{p^0} + y^{p^0}. \]
-
 Basis, $n=1$:
 \[ (x+y)^p = \sum_{k=0}^{p} {p \choose k} x^{p-k} y^{k}  \]
 \[ = {p \choose 0} x^{p} y^{0} + {p \choose 1} x^{p-1} y^{1} + {p \choose 2} x^{p-2} y^{2}~ \dots~{p \choose p-2} x^{2} y^{p-2} + {p \choose p-1} x^{1} y^{p-1} + {p \choose p} x^{0} y^{p} \]
