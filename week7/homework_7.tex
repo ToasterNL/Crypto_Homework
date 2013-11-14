@@ -21,11 +21,12 @@
 $m = 42$\\
 $h_{A} = 224$\\
 $k = 654$\\
-$a = 3$\\
-$\hbox{Publickey Bob} = 3^{654} \pmod{1013} = 628$\\
-$\hbox{Encrypted message} = 42 \cdot 224^{654} \pmod{1013} = 635$
+$g = 3$\\
+$\hbox{$c_1$} = 3^{654} \pmod{1013} = 628$\\
+$\hbox{$s$} = h_A^k = 224^{654} \pmod{1013} = 1004 $\\
+$\hbox{$c_2$} = 42 \cdot 1004 \pmod{1013} = 635$
 
-The message send to Alice will then look like $(628, 635)$
+The message sent to Alice will then be $(628, 635)$
 
 If we look ahead to question 3, we calculated that Alice has a secret random value of 612. We can calculate the decryption to check the answer:\\
 
@@ -33,8 +34,57 @@ $628^{612} \pmod{1013} = 1004$\\
 $\hbox{Multiplicative inverse} = 1004^{-1} \pmod{1013} = 225$\\
 $\hbox{Decryption:} 225 \cdot 635 \pmod{1013} = 42$
 
-\\
 \section{Question 2}
+The product of all monic, irreducible polynomials of degree 6 over $\mathbb{F}_2$.
+
+\[
+\prod_{d|n}(x^{q^{\frac{n}{d}}}-x)^{\mu(d)}
+=
+(x^{2^{6}}-x)^{\mu(1)}
+(x^{2^{3}}-x)^{\mu(2)}
+(x^{2^{2}}-x)^{\mu(3)}
+(x^{2^{1}}-x)^{\mu(6)}
+\]
+\[
+=
+(x^{64}-x)^{\mu(1)}
+(x^{8}-x)^{\mu(2)}
+(x^{4}-x)^{\mu(3)}
+(x^{2}-x)^{\mu(6)}
+\]
+\[
+=
+(x^{64}-x)^{1}
+(x^{8}-x)^{-1}
+(x^{4}-x)^{-1}
+(x^{2}-x)^{1}
+\]
+\[
+=
+\frac{
+(x^{64}-x)
+(x^{2}-x)
+}{
+(x^{8}-x)
+(x^{4}-x)
+}
+\]
+\[
+=
+\frac{
+x^{66}-x^3-x^{65}+x^2
+}{
+x^{12}-x^5+x^9+x^2
+}
+\]
+\[
+=
+\frac{
+x^{66}+x^{65}+x^3+x^2
+}{
+x^{12}+x^9+x^5+x^2
+}
+\]
 
 \section{Question 3}
 
@@ -193,8 +243,90 @@ $w = 11 \cdot 4 \cdot 11 = 484$
 
 We can fill $484$ in for the values of $v$ in the matrix and see that this is correct.\\
 
-The secret value is: $p_{1}_{i} \cdot u + p_{2}_{i} \cdot v + p_{3}_{i} \cdot w$\\
+The secret value is: $p_{{1}_{i}} \cdot u + p_{{2}_{i}} \cdot v + p_{{3}_{i}} \cdot w$\\
 We fill in the values: $ 2 \cdot 253 + 6 \cdot 276 + 13 \cdot 484 \pmod{1012} = 8454 \pmod{1012} = 358$
 
 \section{Question 5}
+\subsection{}
+We need to show that $R = R'$, i.e. $g^k=g^{u_1} \cdot h_A^{u_2}$
+\[ g^k=g^{u_1} \cdot h_A^{u_2} \]
+%\[ g^k=g^{u_1} \cdot g^{a^{u_2}} \]
+%\[ g^k=g^{u_1+a^{u_2}} \]
+%\[ g^k=g^{u_1+a^{u_2}} \]
+%\[ g^k=g^{(h(m) \cdot w \mod l)+a^{u_2}} \]
+%\[ g^k=g^{(h(m) \cdot w \mod l)+a^{(r \cdot w~mod~l)}} \]
+%\[ g^k=g^{(h(m) \cdot w \mod l)} \cdot g^{a^{(r \cdot w~mod~l)}} \]
+\[ g^k=g^{(h(m) \cdot w \mod l)} \cdot h_A^{(r \cdot w~mod~l)} \]
+%\[ h(m) = ar+sk \pmod l \]
+
+\[ g^k=g^{(h(m) \cdot w \mod l)} \cdot h_A^{(r \cdot w~mod~l)} \]
+%\[ g^k=g^{(h(m) \cdot w \mod l) + {a^{(r \cdot w~mod~l)}}} \]
+%\[ g^{sk}=g^{s(h(m) \cdot w \mod l) + {a^{(r \cdot w~mod~l)}}} \]
+\[ g^{sk}=g^{h(m)} \cdot h_A^{s(r \cdot w~mod~l)} \]
+\[ g^{sk}=g^{h(m)} \cdot h_A^{r} \]
+
+And we get stuck fairly early on.
+
+%\[ s=k^{-1}(H(m)+r \cdot a) mod~l \]
+%\[ w=s^{-1}=(k^{-1}(H(m)+r \cdot a))^{-1} mod~l \]
+
+%\[ g^k=g^{(h(m) \cdot (k^{-1} \cdot (H(m)+r \cdot a))^{-1} \mod l)} \cdot h_A^{(r \cdot ((k^{-1} \cdot (H(m)+r \cdot a))^{-1})~mod~l)} \]
+
+%\[ g^k=g^{(h(m) \cdot (k^{-1} \cdot (H(m)+r \cdot a))^{-1} \mod l)} \cdot h_A^{(r \cdot (k \cdot (H(m)+r \cdot a)^{-1})~mod~l)} \]
+%\[ g^k=g^{(h(m)) \cdot ((k^{-1} \cdot (H(m)+r \cdot a))^{-1} \mod l)} \cdot g^{a^{(r \cdot (k \cdot (H(m)+r \cdot a)^{-1})~mod~l)}} \]
+%\[ g^k=g^{(h(m)) \cdot ((k^{-1} \cdot (H(m)+r \cdot a))^{-1} \mod l)} \cdot g^{a^{r}} \cdot g^{a^{(k \cdot (H(m)+r \cdot a)^{-1})~mod~l)}} \]
+
+%\[ k=(h(m) \cdot k \cdot (H(m)+r \cdot a)^{-1} \mod l)+a^{(r \cdot w~mod~l)} \]
+%\[ k=(h(m) \cdot k \cdot (H(m))^{-1}+(r \cdot a)^{-1} \mod l)+a^{u_2} \]
+%\[ k=(k + (r \cdot a)^{-1} \mod l)+a^{(r \cdot w~mod~l)} \]
+
+%\[ k=(k + r^{-1} \cdot a^{-1} \mod l)+a^{(r \cdot w~mod~l)} \]
+%\[ k=(k + r^{-1} \cdot a^{-1} \mod l)+a^{(r \cdot (k^{-1} \cdot H(m)^{-1})+(r^{-1} \cdot a^{-1}))~mod~l)} \]
+
+\subsection{}
+We have:
+\[
+s = k^{-1}(H(m)+r \cdot a) \mod l
+\]
+With $k$, we get:
+\[
+ks=(H(m)+r \cdot a) \mod l
+\]
+Since we also know $H(m)$ (from $m$), we get:
+\[
+ks-H(m)=r \cdot a \mod l
+\]
+Then, we get $a$ by dividing with $r$:
+\[
+\frac{ks-H(m)}{r}=a \mod l
+\]
+
+\subsection{}
+Using the previous result, we have to solve:
+\[
+\frac{k s_1 - H(m_1)}{r_1}
+\&
+\frac{k s_2 - H(m_2)}{r_2}
+\pmod l
+\]
+\[
+\frac{k 448 - 345}{365}
+\&
+\frac{k 969 - 567}{365}
+\pmod l
+\]
+Uh-oh, looks like Alice used the same random number twice!
+We solve for $k$.
+\[
+k 448 - 345
+=
+k 969 - 567
+\pmod l
+\]
+\[
+% TODO
+k=679
+\]
+
+
 \end{document}
