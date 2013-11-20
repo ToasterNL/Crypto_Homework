@@ -1,4 +1,5 @@
 # Schoolbook Pollard's Rho with sage
+# sage: load pollards_rho.sage
 
 class RandomWalkGroup:
 	def __init__(self, generator, modulus, target):
@@ -34,8 +35,8 @@ def pollards_rho(g,n,h):
 		fast.walk()
 		fast.walk()
 		print "%6s %6s %6s %6s %6s %6s" % (slow.t, slow.a, slow.b, fast.t, fast.a, fast.b)
-		assert slow.t == pow(g,slow.a,n) * pow(h,slow.b,n) % n
-		assert fast.t == pow(g,fast.a,n) * pow(h,fast.b,n) % n
+		#assert slow.t == pow(g,slow.a,n) * pow(h,slow.b,n) % n
+		#assert fast.t == pow(g,fast.a,n) * pow(h,fast.b,n) % n
 
 		# We've found a match
 		if slow.t == fast.t:
@@ -73,11 +74,11 @@ def pollards_rho(g,n,h):
 			else:
 				print "No solution exists, retrying"
 
-def test():
+def test(times):
 	import random
 	g=random_prime(100)
 	n=random_prime(10000)
-	for i in xrange(0,100):
+	for i in xrange(0, times):
 		h=(g**random.randint(3,n-1)) % n
 		a=pollards_rho(g,n,h)
 		assert pow(g,a,n) == h
@@ -96,7 +97,7 @@ def main():
 	#pollards_rho(3,1091,25)
 
 	# Test it
-	#test()
+	#test(100)
 
 if __name__ == "__main__":
     main()
