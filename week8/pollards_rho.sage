@@ -53,16 +53,12 @@ def pollards_rho(g,n,h):
 				for i in range(0,d):
 					candidate = x+(i*(n-1)/d)
 					if pow(g, candidate, n) == h:
-						print "Found solution: a=%i" % candidate
-						break
+						print "Found solution: a=%i\n" % candidate
+						return candidate
 					else:
 						print "Candidate %i rejected" % candidate
 			else:
 				print "No solution exists, retrying"
-		if pow(g, candidate, n) == h:
-			break
-	print
-	return candidate
 
 def test():
 	import random
