@@ -42,8 +42,6 @@ def pollards_rho(g,n,h):
 			assert g**a %n == h**b % n
 			print "Solving for a in:\n %ia = %i (mod %i)" % (b,a, (n-1))
 			d = gcd(b,n-1)
-			print a
-			print d
 			if a % d == 0:
 				# Solve using linear congruence
 				print "This has %i solution(s)" % d
@@ -72,7 +70,6 @@ def test():
 	n=random_prime(10000)
 	for i in xrange(0,100):
 		h=(g**random.randint(3,n-1)) % n
-		print h
 		a=pollards_rho(g,n,h)
 		assert g**a % n == h
 
@@ -91,7 +88,7 @@ def main():
 	#pollards_rho(3,1091,25)
 
 	# Test it
-	test()
+	#test()
 
 if __name__ == "__main__":
     main()
