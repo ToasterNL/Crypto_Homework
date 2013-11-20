@@ -36,28 +36,33 @@ def pollards_rho(g,n,h):
 		assert slow.t == g**slow.a * h**slow.b % n
 		assert fast.t == g**fast.a * h**fast.b % n
 		if slow.t == fast.t:
-			break
-	assert g**fast.a * h**fast.b % n == g**slow.a * h**slow.b % n
-	a=(slow.a-fast.a) % (n-1)
-	b=(fast.b-slow.b) % (n-1)
-	assert g**a %n == h**b % n
-	print "Solving for a in:\n %ia = %i (mod %i)" % (b,a, (n-1))
-	d = gcd(b,n-1)
-	if a % d == 0:
-		# Solve using linear congruence
-		print "This has %i solution(s)" % d
-		q, r, s = xgcd(b,n-1)
-		# Basis solution
-		x=((r*a)/d) % ((n-1)/d)
-		#assert b*x % (n-1) == a
-		for i in range(0,d):
-			# Solutions congruent to a factor of N
-			candidate = x+(i*(n-1)/d) % n
-			if g**candidate % n == h:
-				print "Found solution: a=%i" % candidate
-				break
+			assert g**fast.a * h**fast.b % n == g**slow.a * h**slow.b % n
+			a=(slow.a-fast.a) % (n-1)
+			b=(fast.b-slow.b) % (n-1)
+			assert g**a %n == h**b % n
+			print "Solving for a in:\n %ia = %i (mod %i)" % (b,a, (n-1))
+			d = gcd(b,n-1)
+			print a
+			print d
+			if a % d == 0:
+				# Solve using linear congruence
+				print "This has %i solution(s)" % d
+				q, r, s = xgcd(b,n-1)
+				# Basis solution
+				x=((r*a)/d) % ((n-1)/d)
+				assert b*x % (n-1) == a
+				# Congruent solutions
+				for i in range(0,d):
+					candidate = x+(i*(n-1)/d)
+					if g**candidate % n == h:
+						print "Found solution: a=%i" % candidate
+						break
+					else:
+						print "Candidate %i rejected" % candidate
 			else:
-				print "Candidate %i rejected" % candidate
+				print "No solution exists, retrying"
+		if g**candidate % n == h:
+			break
 	print
 	return candidate
 
@@ -67,6 +72,7 @@ def test():
 	n=random_prime(10000)
 	for i in xrange(0,100):
 		h=(g**random.randint(3,n-1)) % n
+		print h
 		a=pollards_rho(g,n,h)
 		assert g**a % n == h
 
@@ -85,7 +91,7 @@ def main():
 	#pollards_rho(3,1091,25)
 
 	# Test it
-	#test()
+	test()
 
 if __name__ == "__main__":
     main()
