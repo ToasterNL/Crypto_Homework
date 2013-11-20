@@ -58,9 +58,9 @@ def pollards_rho(g,n,h):
 				q, r, s = xgcd(b,order)
 
 				# Basis solution
-				candidate_modulus = ((n-1)/d)
+				candidate_modulus = (order/d)
 				x=((r*a)/d) % candidate_modulus
-				#assert b*x % (n-1) == a
+				#assert b*x % order == a
 
 				# Congruent solutions
 				for i in range(0,d):
