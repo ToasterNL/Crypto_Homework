@@ -47,13 +47,9 @@ def pollards_rho(g,n,h):
 		# Solve using linear congruence
 		print "This has %i solution(s)" % d
 		q, r, s = xgcd(b,n-1)
-		print r
-		print a
 		#assert r*b+s*(n-1) == d
 		# Basis solution
-		print ((n-1)/d)
 		x=((r*a)/d) % ((n-1)/d)
-		print x
 		assert b*x % (n-1) == a
 		for i in range(0,d):
 			# Solutions congruent to a factor of N
@@ -69,11 +65,11 @@ def main():
 	# Assignment, a=375
 	pollards_rho(3,1013,245)
 	# Wikipedia example, a=10
-	pollards_rho(2,1019,5)
+	#pollards_rho(2,1019,5)
 	# Test, a=456
-	pollards_rho(3,1013,732)
+	#pollards_rho(3,1013,732)
 	# Test, a=123
-	pollards_rho(3,1091,25)
+	#pollards_rho(3,1091,25)
 
 if __name__ == "__main__":
     main()
