@@ -47,12 +47,12 @@ def pollards_rho(g,n,h):
 				print "This has %i solution(s)" % d
 				q, r, s = xgcd(b,n-1)
 				assert r*b+s*(n-1) == d
+				# Basis solution
+				x=((r*a)/d) % ((n-1)/d)
+				assert b*x % (n-1) == a
 				for i in range(0,d):
-					# Basis solution
-					x=((r*a)/d) % ((n-1)/d)
-					# Solutions congruent to ord(group)/divisor
+					# Solutions congruent to a factor of N
 					candidate = x+(i*(n-1)/d)
-					#print candidate
 					if g**candidate % n == h:
 						print "Found solution, a=%i" % candidate
 						break
