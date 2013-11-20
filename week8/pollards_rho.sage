@@ -41,15 +41,19 @@ def pollards_rho(g,n,h):
 	print "Solve for Y:\n %iY = %i (mod %i)" % (b,a, (n-1))
 	d = gcd(b,n-1)
 	if a % d == 0:
+		# Solve using linear congruence
 		print "This has %i solution(s)" % d
 		q, r, s = xgcd(b,n-1)
-		assert r*b+s*(n-1) == d
 		for i in range(0,d):
+			# Basis solution
 			x=((r*a)/d) % ((n-1)/d)
+			# Solutions congruent to ord(group)/divisor
 			candidate = x+(i*(n-1)/d)
 			print candidate
 			if g**candidate % n == h:
 				print "Found solution, a=%i" % candidate
+	else:
+		print "This has no solution"
 
 def main():
 	# Assignment, a=375
