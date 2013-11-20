@@ -69,7 +69,6 @@ def test():
 		a=pollards_rho(g,n,h)
 		assert pow(g,a,n) == h
 
-
 def main():
 	# Assignment, a=375
 	pollards_rho(3,1013,245)
@@ -84,7 +83,7 @@ def main():
 	#pollards_rho(3,1091,25)
 
 	# Test it
-	test()
+	#test()
 
 if __name__ == "__main__":
     main()
