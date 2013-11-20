@@ -58,13 +58,13 @@ def pollards_rho(g,n,h):
 				q, r, s = xgcd(b,order)
 
 				# Basis solution
-				candidate_modulus = (order/d)
-				x=((r*a)/d) % candidate_modulus
+				solution_modulus = (order/d)
+				x=((r*a)/d) % solution_modulus
 				#assert b*x % order == a
 
 				# Congruent solutions
 				for i in range(0,d):
-					candidate = x+(i*candidate_modulus)
+					candidate = x+(i*solution_modulus)
 					if pow(g, candidate, n) == h:
 						print "Found solution: a=%i\n" % candidate
 						return candidate
