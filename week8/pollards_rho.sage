@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# Schoolbook Pollard's Rho with sage
 
 class RandomWalkGroup:
 	def __init__(self, generator, modulus, target):
@@ -47,10 +47,9 @@ def pollards_rho(g,n,h):
 		# Solve using linear congruence
 		print "This has %i solution(s)" % d
 		q, r, s = xgcd(b,n-1)
-		#assert r*b+s*(n-1) == d
 		# Basis solution
 		x=((r*a)/d) % ((n-1)/d)
-		assert b*x % (n-1) == a
+		#assert b*x % (n-1) == a
 		for i in range(0,d):
 			# Solutions congruent to a factor of N
 			candidate = x+(i*(n-1)/d) % n
@@ -60,16 +59,33 @@ def pollards_rho(g,n,h):
 			else:
 				print "Candidate %i rejected" % candidate
 	print
+	return candidate
+
+def test():
+	import random
+	g=random_prime(100)
+	n=random_prime(10000)
+	for i in xrange(0,100):
+		h=(g**random.randint(3,n-1)) % n
+		a=pollards_rho(g,n,h)
+		assert g**a % n == h
+
 
 def main():
 	# Assignment, a=375
 	pollards_rho(3,1013,245)
+
 	# Wikipedia example, a=10
 	#pollards_rho(2,1019,5)
+
 	# Test, a=456
 	#pollards_rho(3,1013,732)
+
 	# Test, a=123
 	#pollards_rho(3,1091,25)
+
+	# Test it
+	#test()
 
 if __name__ == "__main__":
     main()
