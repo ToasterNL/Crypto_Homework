@@ -33,13 +33,13 @@ def pollards_rho(g,n,h):
 		fast.walk()
 		fast.walk()
 		print "%6s %6s %6s %6s %6s %6s" % (slow.t, slow.a, slow.b, fast.t, fast.a, fast.b)
-		assert slow.t == g**slow.a * h**slow.b % n
-		assert fast.t == g**fast.a * h**fast.b % n
+		assert slow.t == pow(g,slow.a,n) * pow(h,slow.b,n) % n
+		assert fast.t == pow(g,fast.a,n) * pow(h,fast.b,n) % n
 		if slow.t == fast.t:
-			assert g**fast.a * h**fast.b % n == g**slow.a * h**slow.b % n
+			assert pow(g,fast.a,n) * pow(h,fast.b,n) % n == pow(g,slow.a,n) * pow(h, slow.b, n) % n
 			a=(slow.a-fast.a) % (n-1)
 			b=(fast.b-slow.b) % (n-1)
-			assert g**a %n == h**b % n
+			assert pow(g,a,n) == pow(h,b,n)
 			print "Solving for a in:\n %ia = %i (mod %i)" % (b,a, (n-1))
 			d = gcd(b,n-1)
 			if a % d == 0:
@@ -52,14 +52,14 @@ def pollards_rho(g,n,h):
 				# Congruent solutions
 				for i in range(0,d):
 					candidate = x+(i*(n-1)/d)
-					if g**candidate % n == h:
+					if pow(g, candidate, n) == h:
 						print "Found solution: a=%i" % candidate
 						break
 					else:
 						print "Candidate %i rejected" % candidate
 			else:
 				print "No solution exists, retrying"
-		if g**candidate % n == h:
+		if pow(g, candidate, n) == h:
 			break
 	print
 	return candidate
@@ -71,7 +71,7 @@ def test():
 	for i in xrange(0,100):
 		h=(g**random.randint(3,n-1)) % n
 		a=pollards_rho(g,n,h)
-		assert g**a % n == h
+		assert pow(g,a,n) == h
 
 
 def main():
@@ -88,7 +88,7 @@ def main():
 	#pollards_rho(3,1091,25)
 
 	# Test it
-	#test()
+	test()
 
 if __name__ == "__main__":
     main()
