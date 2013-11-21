@@ -1,14 +1,15 @@
 # Index calculus with sage
 # sage: load index_calculus.sage
 
-def index_calculus(g,n,h,base):
+def index_calculus(g,n,h,base,quiet=False):
 	order = n-1
 	l=len(base)
 	rows = [None]*(l+1)
 	runs = 0
 	t=cputime()
 	M=matrix(ZZ, l+1, l+1, sparse=True)
-	print "Solving %i^a = %i (mod %i) using index calculus method on base %s" % (g,h,n, base)
+	if not quiet:
+		print "Solving %i^a = %i (mod %i) using index calculus method on base %s" % (g,h,n, base)
 	while True:
 		a=randint(2,order)
 		test_h=pow(g,a,n)
@@ -60,20 +61,33 @@ def index_calculus(g,n,h,base):
 							# It factors, we have a solution (candidate)
 							solution = (sum([x[1]*h_factors[i+1] for i,x in enumerate(factors)]) - s) % order
 							if not g**solution % n == h:
-								# Can't factor with this base
-								return -1
+								continue
 							# The property the want
 							assert g**solution % n == h
-							print "Solved system:"
-							print M.echelon_form()[0:l]
-							print "Found solution a=%i in %0.03f s" % (solution, cputime()-t)
+							if not quiet:
+								print "Solved system:"
+								print M.echelon_form()[0:l]
+								print "Found solution a=%i in %0.03f s" % (solution, cputime()-t)
 							return solution
 				runs=0
+
+def benchmark(times, base):
+	n=1019
+	g=2
+	t=cputime()
+	for i in xrange(0, times):
+		h=(g**randint(3,n-1)) % n
+		a=index_calculus(g,n,h,base,True)
+		assert pow(g,a,n) == h
+	print "Benchmark of %i runs in F_<%i>%%%i completed in %0.3f s" % (times, g, n, cputime()-t)
 
 def main():
 	# Assignment, a=311
 	factor_base = [2,3,5,7,11,13]
-	a = index_calculus(2,1019,281,factor_base)
+	index_calculus(2,1019,281,factor_base)
+	#for i in range(0,10):
+		#benchmark(10, factor_base)
+		
 
 if __name__ == "__main__":
     main()
