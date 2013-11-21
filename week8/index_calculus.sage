@@ -4,10 +4,11 @@
 def index_calculus(g,n,h,base):
 	order = n-1
 	l=len(base)
-	rows = []
+	rows = [None]*(l+1)
 	runs = 0
 	t=cputime()
 	M=matrix(ZZ, l+1, l+1, sparse=True)
+	print "Solving %i^a = %i (mod %i) using index calculus method on base %s" % (g,h,n, base)
 	while True:
 		a=randint(2,order)
 		test_h=pow(g,a,n)
@@ -32,11 +33,11 @@ def index_calculus(g,n,h,base):
 							add = True
 							break
 				if not add:
-					# Factor without inverse for this remainder
+					# Factor has no inverse for this remainder
 					break
 			if add:
 				row[-1]=a
-				rows.append(row)
+				rows[runs]=row
 				runs += 1
 
 			if runs == l+1:
@@ -44,9 +45,11 @@ def index_calculus(g,n,h,base):
 				M=Matrix(ZZ, rows, sparse=True).echelon_form()
 				h_factors = [M[row,l] for row in xrange(0,l)]
 				for index, h_factor in enumerate(h_factors):
+					# The interesting relationships
 					if not (g**h_factor) % n == base[index]:
 						# Get more relations
 						break
+
 				if (g**h_factor) % n == base[index]:
 					# We have a working solution for the system with the log_n of every factor
 					# Find s for g^s*h % n to factor
@@ -57,8 +60,10 @@ def index_calculus(g,n,h,base):
 							# It factors, we have a solution (candidate)
 							solution = (sum([x[1]*h_factors[i+1] for i,x in enumerate(factors)]) - s) % order
 							if not g**solution % n == h:
-								# Get more relations
-								break
+								# Can't factor with this base
+								return -1
+							# The property the want
+							assert g**solution % n == h
 							print "Solved system:"
 							print M.echelon_form()[0:l]
 							print "Found solution a=%i in %0.03f s" % (solution, cputime()-t)
@@ -66,7 +71,7 @@ def index_calculus(g,n,h,base):
 				runs=0
 
 def main():
-	# Assignment, a=1329
+	# Assignment, a=311
 	factor_base = [2,3,5,7,11,13]
 	a = index_calculus(2,1019,281,factor_base)
 

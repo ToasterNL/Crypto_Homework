@@ -23,24 +23,29 @@ class RandomWalkGroup:
 			self.a = (self.a*2) % (self.modulus-1)
 			self.b = (self.b*2) % (self.modulus-1)
 
-def pollards_rho(g,n,h):
+def pollards_rho(g,n,h,quiet=False):
 	slow = RandomWalkGroup(g,n,h)
 	fast = RandomWalkGroup(g,n,h)
 	candidate = g
 	order = n-1
-	print "Solving %i^a = %i (mod %i) using Pollard's Rho method" % (g,h,n)
-	print "%6s %6s %6s %6s %6s %6s" % ('t_i', 'a_i','b_i','r_i','a_j','b_j')
+	if not quiet:
+		print "Solving %i^a = %i (mod %i) using Pollard's Rho method" % (g,h,n)
+		print "%6s %6s %6s %6s %6s %6s" % ('t_i', 'a_i','b_i','r_i','a_j','b_j')
+	t = cputime()
 	while True:
 		slow.walk()
 		fast.walk()
 		fast.walk()
-		print "%6s %6s %6s %6s %6s %6s" % (slow.t, slow.a, slow.b, fast.t, fast.a, fast.b)
+		if not quiet:
+			print "%6s %6s %6s %6s %6s %6s" % (slow.t, slow.a, slow.b, fast.t, fast.a, fast.b)
+
+		# The objects created by the random walks have this property
 		#assert slow.t == pow(g,slow.a,n) * pow(h,slow.b,n) % n
 		#assert fast.t == pow(g,fast.a,n) * pow(h,fast.b,n) % n
 
-		# We've found a match
+		# We're looking for a match
 		if slow.t == fast.t:
-			# The match
+			# The match property
 			#assert pow(g,fast.a,n) * pow(h,fast.b,n) % n == pow(g,slow.a,n) * pow(h, slow.b, n) % n
 
 			a=(slow.a-fast.a) % order
@@ -50,54 +55,52 @@ def pollards_rho(g,n,h):
 			#assert pow(g,a,n) == pow(h,b,n)
 
 			# Looking for a solution
-			print "Solving for a in:\n %ia = %i (mod %i)" % (b,a, order)
+			if not quiet:
+				print "Solving for a in:\n %ia = %i (mod %i)" % (b, a, order)
 			d = gcd(b,order)
 			# If d|a this can be solved
 			if a % d == 0:
 				# Solve using linear congruences
-				print "This has %i solution(s)" % d
-				q, r, s = xgcd(b,order)
+				if not quiet:
+					print "This has %i solution(s)" % d
+				q, r, s = xgcd(b, order)
 
 				# Basis solution
-				solution_modulus = (order/d)
-				x=((r*a)/d) % solution_modulus
+				congruence = (order/d)
+				x=((r*a)/d) % congruence
 				#assert b*x % order == a
 
 				# Congruent solutions
 				for i in range(0,d):
-					candidate = x+(i*solution_modulus)
+					candidate = x+(i*congruence)
 					if pow(g, candidate, n) == h:
-						print "Found solution: a=%i\n" % candidate
+						if not quiet:
+							print "Found solution: a=%i in %0.3f s\n" % (candidate, cputime()-t)
 						return candidate
-					else:
+					elif not quiet:
 						print "Candidate %i rejected" % candidate
-			else:
+			elif not quiet:
 				print "No solution exists, retrying"
 
-def test(times):
-	import random
-	g=random_prime(100)
-	n=random_prime(10000)
+def benchmark(times, n_order):
+	n=random_prime(n_order)
+	g=random_prime(n)
+	# Get actual generator, even though it works with any prime
+	while Mod(g,n).multiplicative_order() != n-1: g=random_prime(n)
+	t=cputime()
 	for i in xrange(0, times):
-		h=(g**random.randint(3,n-1)) % n
-		a=pollards_rho(g,n,h)
+		h=(g**randint(3,n-1)) % n
+		a=pollards_rho(g,n,h,True)
 		assert pow(g,a,n) == h
+	print "Benchmark of %i runs in F_<%i>%%%i completed in %0.3f s" % (times, g, n, cputime()-t)
 
 def main():
 	# Assignment, a=375
 	pollards_rho(3,1013,245)
 
-	# Wikipedia example, a=10
-	#pollards_rho(2,1019,5)
-
-	# Test, a=456
-	#pollards_rho(3,1013,732)
-
-	# Test, a=123
-	#pollards_rho(3,1091,25)
-
-	# Test it
-	#test(100)
+	# Benchmark
+	#for i in xrange(0,10):
+		#benchmark(100, 100000)
 
 if __name__ == "__main__":
     main()

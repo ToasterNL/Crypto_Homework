@@ -9,7 +9,7 @@
 %  \end{array}\right)
 %}
 
-\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002(s134674), s4092368 \\ Radboud University}
+\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002(s134674), 100863(s4092368) \\ Radboud University}
 \title{Cryptography 1, Homework 8}
 
 \begin{document}
@@ -61,7 +61,7 @@ We have implemented the index calculus algorithm as given.
 We pick random exponents of g in the group to find the relation between the exponents of the group's inputs and outputs.
 If we find relationships that are invertible we store them in a matrix until we have a determined system.
 With a solution for these relationships we have the $log_g$ for each of the factor base elements.
-If we now find a factorization of any group element multiple of the public key $h$ we can use these factors to express h in terms of $g$ using the $log_g$ values we obtained.
+If we now find a factorization of any group element multiple of the public key $h$ we can use these factors to express $h$ in terms of $g$ using the $log_g$ values we obtained.
 
 \begin{verbatim}
 sage: load index_calculus.sage
@@ -82,7 +82,7 @@ In any case, because we do a purely random search of the group it's less predict
 
 We also tried this on paper for some time. Below we describe how:
 
-We already have $a_3 = 958$ from description of the question. We also have the relation 
+We already have $a_3 = 958$ from the description of the question. We also have the relation 
 
 $2^{291} \equiv 52 \pmod{1019}, 52 = 2^2 * 13, 291 \equiv 2*a_2 + a_{13} \pmod{1018} $
 
@@ -99,6 +99,19 @@ $2^{41} \equiv 231 \pmod{1019}, 321 = 3*7*11, 41 \equiv a_3 + a_7 + a_11 \pmod{1
 
 From the know relation we can deduce $a_{13} = 289$
 
-Then $a = a_2+a_3+a_5+a_7+a_{11}+a_{13} = 1 + 958 + 10 + 363 + 756 + 289 \pmod{1018}$
+Then $a_2, a_3, a_5, a_7, a_{11}, a_{13} = 1, 958, 10, 363, 756, 289$, giving:
+\begin{align}
+	2 &= 2^1 \pmod{1019} \\
+	3 &= 2^{958} \pmod{1019} \\
+	5 &= 2^{10} \pmod{1019} \\
+	7 &= 2^{363} \pmod{1019} \\
+       11 &= 2^{756} \pmod{1019} \\
+	13 &= 2^{289} \pmod{1019}
+\end{align}
+
+Now we look for a candidate exponent of $g$ to multiply with $h$ leading to a result that factors into our base.
+The first result we've found is $3$.
+$g^3 \cdot h = 210 \pmod{1019} = 2 \cdot 3 \cdot 5 \cdot 7 $.
+Our result $a = (1 \cdot 1 + 1 \cdot 958 + 1 \cdot 10 + 1 \cdot 363) - 3 = 1329 = 311 \pmod{1018}$.
 
 \end{document}
