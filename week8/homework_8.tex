@@ -18,7 +18,7 @@
 
 \section{Pollard's Rho algorithm}
 We have implemented Pollard's Rho algorithm as given.
-We do a random walk until we hit a point where $t_i=r_i$ and where we can find inverses, then exploit this relation to find candidate solutions for a derived congruence relation.
+We do a random walk until we hit a point where $t_i=r_i$ with $r_i = t_{2i}$ and where we can find inverses, then exploit this relation to find candidate solutions for a derived congruence relation.
 \begin{verbatim}
 sage: load pollards_rho.sage
 Solving 3^a = 245 (mod 1013) using Pollard's Rho method
