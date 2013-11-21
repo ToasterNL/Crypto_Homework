@@ -80,4 +80,25 @@ We have a working result, but much worse performance.
 This is likely due to the required linear equation solver, but also our implementation is far from optimal in terms of memory use for the matrix system.
 In any case, because we do a purely random search of the group it's less predictable how long it will take to form a fully determined linear system.
 
+We also tried this on paper for some time. Below we describe how:
+
+We already have $a_3 = 958$ from description of the question. We also have the relation 
+
+$2^{291} \equiv 52 \pmod{1019}, 52 = 2^2 * 13, 291 \equiv 2*a_2 + a_{13} \pmod{1018} $
+
+Using a little logic and random guessing we find the following relations:
+
+$2^{10} \equiv 5 \pmod{1019}, 5 = 5, 10 \equiv a_{5} \pmod{1018} $, which results in $a_5 = 10$
+
+$2^{11} \equiv 10 \pmod{1019}, 10 = 2*5, 11 \equiv a_2 + a_{5} \pmod{1018} $, which results in $a_2 = 1$
+
+$2^{666} \equiv 147 \pmod{1019}, 147 = 3*7^2, 666 \equiv a_3 + 2*a_{7} \pmod{1018} $, which results in $a_7 = 872$
+Here we notice that $1018$ is not prime, so we have to use $872 \pmod{509} = 363 = a_7$
+
+$2^{41} \equiv 231 \pmod{1019}, 321 = 3*7*11, 41 \equiv a_3 + a_7 + a_11 \pmod{1018} $, which results in $a_11 = 756$
+
+From the know relation we can deduce $a_{13} = 289$
+
+Then $a = a_2+a_3+a_5+a_7+a_{11}+a_{13} = 1 + 958 + 10 + 363 + 756 + 289 \pmod{1018}$
+
 \end{document}
