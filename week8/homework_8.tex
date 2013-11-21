@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%\newenvironment{amatrix}[1]{%
+%  \left(\begin{array}{@{}*{#1}{c}|c@{}}
+%}{%
+%  \end{array}\right)
+%}
+
+\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002(s134674), s4092368 \\ Radboud University}
+\title{Cryptography 1, Homework 8}
+
+\begin{document}
+\maketitle
+\date
+
+\section{Pollard's Rho algorithm}
+We have implemented Pollard's Rho algorithm as given.
+We do a random walk until we hit a point where $t_i=r_i$ and where we can find inverses, then exploit this relation to find candidate solutions for a derived congruence relation.
+\begin{verbatim}
+sage: load pollards_rho.sage
+Solving 3^a = 245 (mod 1013) using Pollard's Rho method
+   t_i    a_i    b_i    r_i    a_j    b_j
+     9      2      0     27      3      0
+    27      3      0    243      5      0
+    81      4      0    161      7      0
+   243      5      0    666     28      0
+   729      6      0    231     29      1
+   161      7      0     53     31      1
+   596     14      0    323     63      2
+   666     28      0    589    126      5
+   985     29      0    364    127      6
+   231     29      1    108    128      7
+   693     30      1    972    130      7
+    53     31      1    947    262     14
+   783     62      2    531    524     29
+   323     63      2    280    525     30
+  1003    126      4    161    526     31
+   589    126      5    666     80    124
+   459    126      6    231     81    125
+   364    127      6     53     83    125
+    36    127      7    323    167    250
+   108    128      7    589    334    501
+   324    129      7    364    335    502
+   972    130      7    108    336    503
+   890    131      7    972    338    503
+   947    262     14    947    678   1006
+Solving for a in:
+ 992a = 596 (mod 1012)
+This has 4 solution(s)
+Candidate 122 rejected
+Found solution: a=375 in 0.004 s
+\end{verbatim}
+
+We're getting correct results fast using this implementation.
+
+\section{Index calculus}
+We have implemented the index calculus algorithm as given.
+We pick random exponents of g in the group to find the relation between the exponents of the group's inputs and outputs.
+If we find relationships that are invertible we store them in a matrix until we have a determined system.
+With a solution for these relationships we have the $log_g$ for each of the factor base elements.
+If we now find a factorization of any group element multiple of the public key $h$ we can use these factors to express h in terms of $g$ using the $log_g$ values we obtained.
+
+\begin{verbatim}
+sage: load index_calculus.sage
+Solved system:
+[  1   0   0   0   0   0   1]
+[  0   1   0   0   0   0 958]
+[  0   0   1   0   0   0  10]
+[  0   0   0   1   0   0 363]
+[  0   0   0   0   1   0 756]
+[  0   0   0   0   0   1 289]
+Found solution a=311 in 0.044 s
+\end{verbatim}
+
+We have a working result, but much worse performance.
+This is likely due to the required linear equation solver, but also our implementation is far from optimal in terms of memory use for the matrix system.
+In any case, because we do a purely random search of the group it's less predictable how long it will take to form a fully determined linear system.
+
+\end{document}
