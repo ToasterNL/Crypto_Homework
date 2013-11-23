@@ -7,7 +7,6 @@ def index_calculus(g,n,h,base,quiet=False):
 	rows = [None]*(l+1)
 	runs = 0
 	t=cputime()
-	M=matrix(ZZ, l+1, l+1, sparse=True)
 	if not quiet:
 		print "Solving %i^a = %i (mod %i) using index calculus method on base %s" % (g,h,n, base)
 	while True:
@@ -17,7 +16,7 @@ def index_calculus(g,n,h,base,quiet=False):
 
 		# If this value factors into our factor base
 		if factors and factors[-1][0] <= base[-1]:
-			# That means it's mooth with respect to the factor base
+			# That means it's smooth with respect to the factor base
 			row = [0]*(l+1)
 			# Verify inverses for these factors exist
 			for coefficient, exponent in factors:
@@ -29,7 +28,7 @@ def index_calculus(g,n,h,base,quiet=False):
 					add = False
 					congruence = order/d
 					for j in xrange(0,d):
-						if g**(exponent+(j*congruence)) % n == coefficient:
+						if pow(g,(exponent+(j*congruence)),n) == coefficient:
 							row[base.index(coefficient)]=exponent+(j*congruence)
 							add = True
 							break
@@ -47,11 +46,11 @@ def index_calculus(g,n,h,base,quiet=False):
 				h_factors = [M[row,l] for row in xrange(0,l)]
 				for index, h_factor in enumerate(h_factors):
 					# The interesting relationships
-					if not (g**h_factor) % n == base[index]:
+					if not pow(g,h_factor,n) == base[index]:
 						# Get more relations
 						break
 
-				if (g**h_factor) % n == base[index]:
+				if pow(g,h_factor,n) == base[index]:
 					# We have a working solution for the system with the log_n of every factor
 					# Find s for g^s*h % n to factor
 					for s in range(0,order):
@@ -60,10 +59,10 @@ def index_calculus(g,n,h,base,quiet=False):
 						if factors and factors[-1][0] <= base[-1]:
 							# It factors, we have a solution (candidate)
 							solution = (sum([x[1]*h_factors[i+1] for i,x in enumerate(factors)]) - s) % order
-							if not g**solution % n == h:
+							if not pow(g,solution,n) == h:
 								continue
 							# The property the want
-							assert g**solution % n == h
+							#assert pow(g,solution,n) == h
 							if not quiet:
 								print "Solved system:"
 								print M.echelon_form()[0:l]
@@ -76,7 +75,7 @@ def benchmark(times, base):
 	g=2
 	t=cputime()
 	for i in xrange(0, times):
-		h=(g**randint(3,n-1)) % n
+		h=g**(randint(3,n-1)) % n
 		a=index_calculus(g,n,h,base,True)
 		assert pow(g,a,n) == h
 	print "Benchmark of %i runs in F_<%i>%%%i completed in %0.3f s" % (times, g, n, cputime()-t)

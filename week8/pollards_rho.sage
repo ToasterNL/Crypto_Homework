@@ -26,7 +26,6 @@ class RandomWalkGroup:
 def pollards_rho(g,n,h,quiet=False):
 	slow = RandomWalkGroup(g,n,h)
 	fast = RandomWalkGroup(g,n,h)
-	candidate = g
 	order = n-1
 	if not quiet:
 		print "Solving %i^a = %i (mod %i) using Pollard's Rho method" % (g,h,n)
@@ -89,7 +88,7 @@ def benchmark(times, n_order):
 	while Mod(g,n).multiplicative_order() != n-1: g=random_prime(n)
 	t=cputime()
 	for i in xrange(0, times):
-		h=(g**randint(3,n-1)) % n
+		h=g**(randint(3,n-1)) % n
 		a=pollards_rho(g,n,h,True)
 		assert pow(g,a,n) == h
 	print "Benchmark of %i runs in F_<%i>%%%i completed in %0.3f s" % (times, g, n, cputime()-t)
@@ -104,3 +103,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
