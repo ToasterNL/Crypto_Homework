@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%\newenvironment{amatrix}[1]{%
+%  \left(\begin{array}{@{}*{#1}{c}|c@{}}
+%}{%
+%  \end{array}\right)
+%}
+
+\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002(s134674), 100863(s4092368) \\ Radboud University}
+\title{Cryptography 1, Homework 9}
+
+\begin{document}
+\maketitle
+\date
+
+\section{Question 1: Sum is on the circle}
+For $(x_1, y_1) = (\sin(\alpha_1), \cos(\alpha_1))$ and $(x_2, y_2) = (\sin(\alpha_2), \cos(\alpha_2))$.
+\\After adding $(x_1, y_1)$ and $(x_2, y_2)$ we obtain a new coordinate $(x_3, y_3)$.
+\\Where,
+\\$x_3 = x_1 \cdot y_2 + y_1 \cdot x_2 = \sin(\alpha_1) \cdot \cos(\alpha_2) + \cos(\alpha_1) \cdot \sin(\alpha_2) = \sin(\alpha_1 + \alpha_2)$
+\\$y_3 = y_1 \cdot y_2 - x_1 \cdot x_2 = \cos(\alpha_1) \cdot \cos(\alpha_2) - \sin(\alpha_1) \cdot \sin(\alpha_2) = \cos(\alpha_1 + \alpha_2)$
+\\If we put the results for $x_3$ and $y_3$ back in formula for the circle:
+\\$x^2 + y^2 = \sin(\alpha_1 + \alpha_2)^2 + \cos(\alpha_1 + \alpha_2)^2 = 1$
+
+\section{Question 2: Points on the Edwards curve}
+We can rewrite the Edwards curve $x^2 + y^2 = 1-5 \cdot x^2 \cdot y^2$ to $x^2 + y^2 + 5 \cdot x^2 \cdot y^2 = 1$
+\\If it is on the curve we can write $x^2 + y^2 + 5 \cdot x^2 \cdot y^2 \equiv 1 \pmod{13}$.
+\\For point P $=(6,3) = 6^2 + 3^2 + 5 \cdot 6^2 \cdot 3^2 \equiv 1 \pmod{13}$.
+\\$1665 \equiv 1 \pmod{13}$, so P is on the curve.
+\\For point Q $=(3,7) = 3^2 + 7^2 + 5 \cdot 3^2 \cdot 7^2 \equiv 1 \pmod{13}$.
+\\$2263 \equiv 1 \pmod{13}$, so Q is also on the curve.
+\\\\
+To compute $R = 2P + Q$, we first have to compute $2P = P + P = (6,3) + (6,3)$. 
+\\This results in a new coordinate: $(x_3, y_3) = (\frac{x_1 \cdot y_1 + y_1 \cdot x_1}{1 + d \cdot x_1 \cdot y_1 \cdot x_1 \cdot y_1}, \frac{y_1 \cdot y_1 - x_1 \cdot x_1}{1-d\cdot x_1 \cdot y_1 \cdot x_1 \cdot y_1})$.
+\\For $x_3 = \frac{x_1 \cdot y_1 + y_1 \cdot x_1}{1 + d \cdot x_1 \cdot y_1 \cdot x_1 \cdot y_1} = \frac{6 \cdot 3 + 3 \cdot 6}{1 + -5 \cdot 6 \cdot 3 \cdot 6 \cdot 3} = \frac{36 \pmod{13}}{-1619 \pmod{13}} = \frac{10}{6}$.
+\\For $y_3 = \frac{y_1 \cdot y_1 - x_1 \cdot x_1}{1-d\cdot x_1 \cdot y_1 \cdot x_1 \cdot y_1} = \frac{3 \cdot 3 - 6 \cdot 6}{1--5\cdot 6 \cdot 3 \cdot 6 \cdot 3} = \frac{-27 \pmod{13}}{1621 \pmod{13}} = \frac{12}{9}$.
+\\Thus $2P = (\frac{10}{6}, \frac{12}{9})$
+\\$R = 2P + Q = (\frac{10}{6}, \frac{12}{9}) + (3,7)$.
+\\This results in a new coordinate: $(x_4, y_4) = \frac{x_1 \cdot y_2 + y_1 \cdot x_2}{1 + d \cdot x_1 \cdot y_1 \cdot x_2 \cdot y_2}, \frac{y_1 \cdot y_2 - x_1 \cdot x_2}{1-d\cdot x_1 \cdot y_1 \cdot x_2 \cdot y_2})$.
+\\For $x_4 = \frac{x_1 \cdot y_2 + y_1 \cdot x_2}{1 + d \cdot x_1 \cdot y_1 \cdot x_2 \cdot y_2} = \frac{\frac{10}{6} \cdot 7 + \frac{12}{9} \cdot 3}{1 + -5 \cdot \frac{10}{6} \cdot \frac{12}{9} \cdot 3 \cdot 7} = \frac{\frac{47}{3}}{\frac{-697}{3}} = -\frac{47 \pmod{13}}{697 \pmod{13}} = - \frac{8}{8} = -1$
+\\For $y_4 = \frac{y_1 \cdot y_2 - x_1 \cdot x_2}{1-d\cdot x_1 \cdot y_1 \cdot x_2 \cdot y_2} = \frac{\frac{12}{9} \cdot 7 - \frac{10}{6} \cdot 3}{1--5\cdot \frac{10}{6} \cdot \frac{12}{9} \cdot 3 \cdot 7} = \frac{\frac{13}{3}}{\frac{703}{3}} = \frac{13 \pmod{13}}{703 \pmod{13}} = \frac{0}{1} = 0$
+\\
+\\Thus the coordinate of $R = (-1,0)$, if we check this with the Edwards Curve, we can see it result indeed to 1.
+
+
+
+\end{document}
