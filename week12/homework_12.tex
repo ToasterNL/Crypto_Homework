@@ -23,7 +23,17 @@ We used this to calculate question 1 and 2, the results are shown below:
 \\
 Question 1: 8640
 \\
+We could also use factor in sage to obtain: $2^3*3^3*5^2*7$
+\\
+Then we use the product formula: $37800*(1-(1/2))*(1-(1/3))*(1-(1/5))*(1-(1/7)) = 8640$
+\\
 Question 2: 379247933987370471260160
+\\
+We could also use factor in sage to obtain: $2^17 * 3^12 * 5 * 7^5 * 11^7 * 17$
+\\
+Then we use the product formula: 
+\\
+$1939201349958859167498240*(1-(1/2))*(1-(1/3))*(1-(1/5))*(1-(1/7))*(1-(1/11))*(1-(1/17)) = 379247933987370471260160$
 
 \section{Question 3:}
 The public key (e, n): (23441, $p \cdot q$) $=$ (23441, 103487)
@@ -88,7 +98,13 @@ So the smallest positive integer to satisfy the system of congruences is 66. The
 
 \section{Question 6:}
 
-%TODO
+We know that $m' = (m || 00...0) \oplus G(r)$ and $r' = r \oplus H(m')$
+\\
+First we have to recover the random string $r = r \oplus H(m')$
+\\
+Then, to recover the message $m || 00...0 = m' \oplus G(r)$
+\\
+The result is the message concatenated with the padding.
 
 
 \end{document}
