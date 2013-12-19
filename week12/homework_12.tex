@@ -16,37 +16,74 @@
 \maketitle
 \date
 
-\section{Question 1 \& 2:}
-Sage has a very nice function named: euler\_phi(n).
-\\
-We used this to calculate question 1 and 2, the results are shown below: 
-\\
-Question 1: 8640
-\\
-We could also use factor in sage to obtain: $2^3*3^3*5^2*7$
-\\
-Then we use the product formula: $37800*(1-(1/2))*(1-(1/3))*(1-(1/5))*(1-(1/7)) = 8640$
-\\
-Question 2: 379247933987370471260160
-\\
-We could also use factor in sage to obtain: $2^17 * 3^12 * 5 * 7^5 * 11^7 * 17$
-\\
-Then we use the product formula: 
-\\
-$1939201349958859167498240*(1-(1/2))*(1-(1/3))*(1-(1/5))*(1-(1/7))*(1-(1/11))*(1-(1/17)) = 379247933987370471260160$
+\section{}
+Sage has a nice function named: $euler\_phi(n)$, which we will not use here.
+We factor the number by hand, starting from the fact that the number is a multiple of 100.
+From then on it's easy to divide the remainder by two or three a few times until we reach a factor of $7$.
+We could also use $factor()$ in sage to obtain: $2^3 \cdot 3^3 \cdot 5^2 \cdot 7$.
 
-\section{Question 3:}
-The public key (e, n): (23441, $p \cdot q$) $=$ (23441, 103487)
+$\phi(37800)$ is then: $37800\cdot(1-\frac{1}{2}) \cdot (1-\frac{1}{3}) \cdot (1-\frac{1}{5}) \cdot (1-\frac{1}{7})$ = 8640.
+
+%\\
+%We used this to calculate question 1 and 2, the results are shown below: 
+%\\
+%Question 1: 8640
+%\\
+%We could also use factor in sage to obtain: $2^3*3^3*5^2*7$
+%\\
+%Then we use the product formula: $37800*(1-(1/2))*(1-(1/3))*(1-(1/5))*(1-(1/7)) = 8640$
+%\\
+\section{}
+We first notice the number is even. By printing it in binary we can easily see how many 2-powers are in it.
+\begin{verbatim}
+0b110011010101001000101000011011001111100100111111000010010000100100000000000000000
+\end{verbatim}
+
+That's a string of 17 zeroes at the end, so we know that $2^{17}$ is a divisor.
+After dividing by $2^{17}$, we end up with $14794932174368737545$ which is clearly a multiple of $5$.
+Then we get a few divisors that are multiples of 3.
+
+At this point the remaining number is only 43 bits long.
+We can start Pollard's Rho or, in this case, we plugged it in the UNIX `factor' utility.
+We could also use $factor()$ in sage to obtain: $2^{17} \cdot 3^{12} \cdot 5 \cdot 7^5 \cdot 11^7 \cdot 17$
+
+Then we use the totient formula: 
+$\phi(1939201349958859167498240) = 1939201349958859167498240 \cdot (1-(1/2)) \cdot (1-(1/3)) \cdot (1-(1/5)) \cdot (1-(1/7)) \cdot (1-(1/11)) \cdot (1-(1/17)) = 379247933987370471260160$
+
+\section{}
+The public key $(n, e)$: $(p \cdot q, 23441) = (103487, 23441)$.
 \\
-The private key (n, d): (103487, $d \equiv e^{-1} \pmod{\phi(n)} $) $=$ (103487, $d \equiv 23441^{-1} \pmod{\phi(103487)} $) $=$
-\\
-(103487, $d \equiv 23441^{-1} \pmod{102816} $) $=$ (103487, 67889)
+The private key $(n, d)$: $(103487, d)$.
 
-\section{Question 4:}
+$d \equiv e^{-1} \equiv 23441^{-1}$. % \pmod{\phi(103487)} ) = (103487, d \equiv 23441^{-1} \pmod{102816} ) = (103487, 67889)$.
 
-%TODO
+$\phi(103487) = 102816 $. \\
+Sanity check:
+\begin{verbatim}
+sage: pow(23441,(102816),103487)
+1
+\end{verbatim}
+$d \equiv e^{-1} \equiv e^{\phi(n)-1}  \equiv 48907 \pmod n$
 
-\section{Question 5:}
+Sanity check \#2:
+\begin{verbatim}
+sage: 23441*48907 % 103487
+1
+\end{verbatim}
+
+The private key $(n, d)$: $(103487, 48907)$.
+
+\section{}
+The message we will send is: $m^e \pmod n$, so $23^{17} \mod 11584115749$.
+We can use the square and multiply method, multiplying $23$ with itself until we reach a wraparound at the modulus.
+At $23^8$ we wrap around, and continue modulo $n$ with $23^8 \mod 11584115749 = 8806290787$ which we continue to multiply by $23$ and taking the modulus at any or every step.
+
+Eventually we compute $23^{17} \mod 11584115749 = 10912105332$.
+
+%Incidentally, their private part of the key, $d$, is $1362837147$.
+%We can use this confirm we did it correctly; 
+
+\section{}
 
 We have the following congruences:
 \\
