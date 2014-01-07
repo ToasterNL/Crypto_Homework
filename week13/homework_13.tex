@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%\newenvironment{amatrix}[1]{%
+%  \left(\begin{array}{@{}*{#1}{c}|c@{}}
+%}{%
+%  \end{array}\right)
+%}
+
+\author{Mark Vijfvinkel \& Aram Verstegen \\ 0863002(s134674), 100863(s4092368) \\ Radboud University}
+\title{Cryptography 1, Homework 13}
+
+\begin{document}
+\maketitle
+\date
+
+\section{Question 1: Fermat Test}
+
+We start with $a = 2$.
+$gcd(2, 263) = 1$ \\
+$a^{n-1} \not\equiv 1 \pmod n = 2^{262} \equiv 1 \pmod{263}$\\
+Thus for $a = 2$ there is no composition possible.\\
+\noindent
+We continue with $a = 3$.
+$gcd(3, 263) = 1$ \\
+$a^{n-1} \not\equiv 1 \pmod n = 3^{262} \equiv 1 \pmod{263}$\\
+Thus for $a = 3$ there is no composition possible.\\
+\noindent
+We continue with $a = 5$.
+$gcd(5, 263) = 1$ \\
+$a^{n-1} \not\equiv 1 \pmod n = 5^{262} \equiv 1 \pmod{263}$\\
+Thus for $a = 5$ there is no composition possible.\\
+\noindent
+This means that for $k = 3$, $n = 263$ is probably prime or Carmichael.
+
+\section{Question 2: Miller-Rabin Test}
+%TODO needs checking!
+If we follow the algorithm given in the lecture, we first have to factor $n - 1 = 263 - 1 = 262$.
+Thus, $262 = 2 * 131$, since $131$ is prime we cannot factor this any further.
+Our $r = 1$ and $t = 131$
+\noindent
+First we have to test for $gcd(a,n) \not = 1$, $gcd(2,263) = 1$.
+Then we test for $a^t \not\equiv \pm 1 \pmod{n}$, $2^{131} \equiv 1 \pmod{263}$. So we can skip the next loop.\\
+\noindent
+Next we test $gcd(3,263) = 1$ and $3^{131} \equiv 1 \pmod{263}$. Again we can skip the next loop.\\
+\noindent
+Next we test $gcd(5,263) = 1$ and $5^{131} \equiv 262 \pmod{263}$. Now we should enter the next loop, but notice that $r - 1 = 1 - 1 = 0$. Meaning that we cannot satisfy the condition of the for-loop. 
+
+Thus concluding that $n$ is prime with a probability of $1 - 4^{-k} = 1 - 4^{-3} = 1 - 0.015625 = 0.984375 \approx 98\%$
+
+\section{Question 3: Pollard rho factorisation}
+
+If we implement the Pollard rho factorisation algorithm as attached to the email (see pollard.sage). \\
+\noindent
+We note that we get the following factors: $479951 \cdot 479939 \cdot 479909 = 110545695839248001$.
+
+
+
+\section{Question 4: $p - 1$ factorisation}
+
+\end{document}
