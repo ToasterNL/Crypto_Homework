@@ -51,7 +51,7 @@ Next we test $gcd(5,263) = 1$ and $5^{131} \equiv 262 \pmod{263}$. Now we should
 Thus concluding that $n$ is prime with a probability of $1 - 4^{-k} = 1 - 4^{-3} = 1 - 0.015625 = 0.984375 \approx 98\%$
 
 The same is attached in \verb|miller_rabin.sage|.
-We have written a somewhat clunky method to factor $n-1$ into powers of two and and an odd factor, but it works for the case $n=263$.
+We have written a somewhat clunky method to factor $n-1$ into powers of two and an odd factor, but it works for the case $n=263$.
 
 \begin{verbatim}
 sage: load miller_rabin.sage
@@ -59,9 +59,9 @@ n-1 = 262 = 2^1 * 131
 prime with probability 0.98
 \end{verbatim}
 
-\section{Question 3: Pollard rho factorisation}
+\section{Question 3: Pollard's Rho factorisation}
 
-If we implement the Pollard rho factorisation algorithm as attached (see \verb|pollard.sage|). \\
+If we implement Pollard's Rho factorisation algorithm as attached (see \verb|pollard.sage|). \\
 \noindent
 We note that we get the following factors: $479951 \cdot 479939 \cdot 479909 = 110545695839248001$.
 
