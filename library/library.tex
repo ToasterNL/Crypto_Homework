@@ -1,0 +1,249 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%\newenvironment{amatrix}[1]{%
+%  \left(\begin{array}{@{}*{#1}{c}|c@{}}
+%}{%
+%  \end{array}\right)
+%}
+
+\author{Mark Vijfvinkel \& Aram Verstegen \\ Radboud University}
+\title{Cryptography 1 library}
+
+\begin{document}
+\maketitle
+\date
+
+\section{Fields}
+Field: $\mathcal{F}_q$ \\
+
+\begin{align*}
+a \equiv b \Leftrightarrow n | (a-b) \\
+\end{align*}
+$a$ is congruent to b mod $n$.
+
+\begin{align*}
+	a+b \mod n &= (a \mod n) + (b \mod n) \mod n\\
+\end{align*}
+
+Ring: isomorphic to $\mathcal{Z}/n$ \\
+Field: isomorphic to $\mathcal{Z}/p$ \\
+(every nonzero element has an inverse).
+
+\begin{align*}
+	gcd(a,n) = 1 \Leftrightarrow \exists a^{-1} \mod n \\
+\end{align*}
+Coprimes to $n$ have an inverse mod $n$.
+
+\begin{itemize}
+	\item $\mathcal{F}_q$ denotes a field with $q$ elements.
+	\item The smallest number $p>0$ with $pa = 0$ for $a$ in $\mathcal{F}_q$ is called the characteristic of $\mathcal{F}_q$.
+	\item The characteristic of a finite field is a prime number.
+	\item Fields with a prime number of elements are called prime fields.
+	\item
+
+	\item Cyclic groups of order $n$ are isomorphic to $\mathcal{Z}/n$.
+	\item Cyclic groups are abelian (commutative).
+\end{itemize}
+
+\subsection{Ring with unity}
+
+\subsection{Order of field}
+The order (number of elements) of a finite field is $p^n$ where $p$ is the characteristic and $n$ is a positive integer limiting the number of coordinates. (Think of it as the number of bits for a field of characteristic 2.)
+
+\subsection{Order of elements}
+
+\subsection{Compute EGCD}
+\subsection{Subfields of prime field}
+\subsection{Factorize polynomial}
+\subsection{Factorization pattern of polynomial}
+\subsection{Compute number of irreducible polynomials}
+\subsection{Show polynomial is irreducible (using Miller-Rabin test)}
+
+
+\subsection{Show there is no polynomial of given degree}
+\subsection{Smallest extension field in which polynomial factors completely into linear factors}
+\subsection{Product of order of other polynomials of given degree}
+
+\section{RSA}
+\subsection{RSA encryption}
+\subsubsection{Key generation}
+\begin{align*}
+primes~p, q \\
+n &= pq \\
+\phi(n) &= (p-1)(q-1) \\
+e : gcd(\phi(n), e) &= 1~(\phi(n)~and~e~are~coprime) \\
+d &\equiv e^{-1} \mod \phi(n) \\
+\end{align*}
+Compute $d$ using egcd.
+
+\subsubsection{Encryption}
+\begin{align*}
+    c &= m^e \mod n \\
+    m &= c^d \mod n \\
+\end{align*}
+
+\subsection{Signatures}
+\begin{align*}
+s &= H(m)^d \mod n \\
+ s^e \mod n &\equiv H(m)~? \\
+\end{align*}
+
+\subsection{Faster RSA decryption knowing p and q}
+\begin{align*}
+v_1 &= c^d \mod p \\
+v_2 &= c^d \mod q \\
+Because~a^{p-1} \mod p = 1 \\
+v_1 &= c^{d \mod p-1} \mod p \\
+v_2 &= c^{d \mod q-1} \mod q \\
+q_{inv} &= p^{-1} \mod q \\
+u &= (v_2 - v_1)q_{inv} \mod q \\
+if~u=0~add~q\\
+c^d \mod n &= v_1 + up &= m \\
+\end{align*}
+
+\subsection{Batch RSA}
+
+\section{ElGamal}
+Uses multiplicative multiplicative group ${\mathcal{Z}/p}^{*}$.
+\subsection{Key generation}
+Choose random integer $m_p$, $1 \leq m_p \leq p-1$, compute $c_P=g^{m_P} \mod p$. \\
+$c_P$ is public, $m_P$ secret.
+
+\subsection{Encryption}
+Choose random integer $r$. \\
+$R=g^r$ \\
+$S=m \cdot c_P^r$ \\
+$c=(R,S)$ \\
+$m=S/R^{m_P}$ \\
+
+\subsection{Signatures}
+% TODO make more foolproof
+Choose random integer $r$ coprime to $p-1$, compute $R=g^r$. \\
+Compute $S$ satisfying:
+$m=m_P \cdot R + r \cdot S \mod p$ 
+using egcd. \\
+Verify using:
+$g^m \equiv c_P^R R^S \mod p$ \\
+
+\section{Integer factorization}
+\subsection{Smooth numbers}
+Smooth numbers factor completely into small prime numbers. A number is $B$-smooth if none of its factors are greater than $B$.
+
+\subsection{Pollard's Rho}
+\begin{verbatim}
+a0 = 1
+b0 = 1
+c = 1
+a0 = (a0**2 + c) % n
+b0 = (((b0**2 + c)**2) + c) % n
+p = gcd(abs(b0 - a0), n)
+if(p > 1):
+        print ("Found a factor: " + str(p))
+while (a0 != b0):
+        a0 = (a0**2 + c) % n
+        b0 = (((b0**2 + c)**2) + c) % n
+        p = gcd(abs(b0 - a0), n)
+        if(p > 1):
+                print ("Found a factor: " + str(p))
+                n = n / p
+\end{verbatim}
+
+
+\subsection{Pollard's p-1}
+Given $n$ to factor, a smoothness parameter $S$, random $2 \leq a < n$: \\
+$R = \Pi p \leq S, p^{\lfloor log_r(n) \rfloor}$ \\
+$d = gcd(a^R-1, n)$ \\
+$if~1 < d < n \rightarrow d~is~factor$ \\
+
+\begin{verbatim}
+def pminus1(n, S):
+  a = randint(2,n)
+  R = 1
+  for q in primes(S):
+    R = R*pow(q,floor(log(S,q)))
+  d = gcd(pow(a,R,n)-1, n)
+  if 1 < int(d) and int(d) < n:
+    return d
+  return False
+\end{verbatim}
+
+\subsection{Fermat test}
+For $k$ rounds, values $1 \leq a < n-1$ \\
+$gcd(a,n) = 1$ (coprimes) AND \\
+$a^{n-1} \not\equiv 1 \pmod n \rightarrow n$ is composite,
+otherwise $n$ is prime or Carmichael for $k$ rounds. \\
+
+\section{Discrete logarithms}
+\subsection{Baby-step giant-step}
+$h = g^e \mod q$ \\
+Compute group order $n$, $q-1$ for finite fields. \\
+$m = \lfloor \sqrt{n} \rfloor$\\
+$m_{inv} = m^{-1} \pmod{q}$\\
+$d = m_{inv}^{m} \pmod{q}$\\
+
+Draw up a table for baby-steps, $g^i \mod q$.\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$i = $ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & \ldots \\
+\hline
+• & $1$ & $g$ & $g^2$ & $g^3$ & $g^4$ & $g^5$ & $g^6$ & \ldots \\
+\hline
+\end{tabular}
+
+Draw up a table for giant-steps, $h \cdot d^j \mod q$ until you find a match for the baby-steps.\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$j = $ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & \ldots \\
+\hline
+• & $h$ & $h \cdot d$ & $h \cdot d^2$ & $h \cdot d^3$ & $h \cdot d^4$ & $h \cdot d^5$ & $h \cdot d^6$ & \ldots \\
+\hline
+\end{tabular} \\
+$e = m \cdot j + i$
+
+\subsection{Pohlig-Hellman}
+When looking for $log_g(h) = k$ in the group $G$ generated by $g$ knowing $h = g^k mod q$.
+Factor the group order $n$ into unique primes $p_i$.
+Then $k$ is congruent to 
+
+
+\subsection{Pollard's Rho}
+
+
+\section{Elliptic curves}
+\subsection{Edwards curves}
+\subsubsection{Finding all affine points on curve}
+% TODO
+%b   | 0 | 1 | 2 | 3 .. | (p-1)/2
+%b^2 | 0 | 1 | 4 mod p | 3^2 mod p
+
+%then transform the equation ax^2+y^2=1+dx^2y^2
+%to y^2=(1-ax^2)/(1-dx^2)
+%plug in all x values and check whether the right hand side gives a square: if
+%so you've found (x,y) and (x,-y) - if not there is no point with that
+%x-coordinate
+%In case you encounter a division by 0 check the original equation. For
+%computing the division by (1-dx^2) you might want to have a list of inverses or
+%a calculator that computes them for you and compute at the beginnin of the
+%exercise -- or bring a printed table with you. Also note that you can use more
+%symmetries, in particular for a=1.
+
+\subsubsection{Verify point is on curve}
+\subsubsection{Compute points}
+\subsubsection{Compute fractions}
+\subsubsection{Compute discrete logarithm}
+\subsubsection{Translate to Montgomery form}
+\subsubsection{Translate to Weierstrass form}
+
+\subsection{Weierstrass curves}
+\subsubsection{Finding all points on curve}
+\subsubsection{Verify point is on curve}
+\subsubsection{Compute points}
+\subsubsection{Compute fractions}
+\subsubsection{Compute discrete logarithm}
+\subsubsection{Translate to Montgomery form}
+\subsubsection{Translate to Edwards form}
+
+\end{document}
