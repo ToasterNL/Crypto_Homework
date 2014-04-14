@@ -133,6 +133,11 @@ $g^m \equiv c_P^R R^S \mod p$ \\
 Smooth numbers factor completely into small prime numbers. A number is $B$-smooth if none of its factors are greater than $B$.
 
 \subsection{Pollard's Rho}
+We do a random walk on the group, using $x_0=1$, $x_{i+1} = x_i^2 + 1$.
+We compute a list of these ${x_0, x_1, \ldots }$
+We try to find cycles $x_2i - x_i$.
+At some point $gcd(x_2i - x_i, n)$ is non-trivial and we have found a factor from $n$.
+
 \begin{verbatim}
 a0 = 1
 b0 = 1
@@ -180,8 +185,7 @@ otherwise $n$ is prime or Carmichael for $k$ rounds. \\
 $h = g^e \mod q$ \\
 Compute group order $n$, $q-1$ for finite fields. \\
 $m = \lfloor \sqrt{n} \rfloor$\\
-$m_{inv} = m^{-1} \pmod{q}$\\
-$d = m_{inv}^{m} \pmod{q}$\\
+$d = m^{-1} \pmod{q}$\\
 
 Draw up a table for baby-steps, $g^i \mod q$.\\
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -223,17 +227,17 @@ Then $k$ is congruent to
 
 \end{enumerate}
 
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline 
-$b$ & 0 & 1 & 2 & 3 & .. & $(p-1)/2$ \\ 
-\hline 
-$b^2$ & 0 & 1 & 4 & 9 & ..  & .. $mod p$ \\ 
-\hline 
-\end{tabular}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline 
+%$b$ & 0 & 1 & 2 & 3 & .. & $(p-1)/2$ \\ 
+%\hline 
+%$b^2$ & 0 & 1 & 4 & 9 & ..  & .. $mod p$ \\ 
+%\hline 
+%\end{tabular}
 
-% TODO
+%% TODO
 
-Draft this table
+%Draft this table
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
 $x $ & 0 & 1 & 2 & 3 & 4 & 5 & \ldots & (p-1)/2 \\
@@ -244,18 +248,18 @@ $x^2 $ & 0 & 1 & 4 mod p & 9 mod p & 16 mod p & 25 mod p & \ldots & $((p-1)/2)^2
 %b   | 0 | 1 | 2 | 3 .. | (p-1)/2
 %b^2 | 0 | 1 | 4 mod p | 3^2 mod p
 
-then transform the equation $ax^2+y^2=1+dx^2y^2$
-to $y^2=(1-ax^2)/(1-dx^2)$
+%then transform the equation $ax^2+y^2=1+dx^2y^2$
+%to $y^2=(1-ax^2)/(1-dx^2)$
 
-Plug in all $x$ values and check whether the right hand side gives a square: if
-so you've found (x,y) and (x,-y) - if not there is no point with that
-x-coordinate.
+%Plug in all $x$ values and check whether the right hand side gives a square: if
+%so you've found (x,y) and (x,-y) - if not there is no point with that
+%x-coordinate.
 
-In case you encounter a division by 0 check the original equation. For
-computing the division by $(1-dx^2)$ you might want to have a list of inverses or
-a calculator that computes them for you and compute at the beginning of the
-exercise -- or bring a printed table with you. Also note that you can use more
-symmetries, in particular for a=1.
+%In case you encounter a division by 0 check the original equation. For
+%computing the division by $(1-dx^2)$ you might want to have a list of inverses or
+%a calculator that computes them for you and compute at the beginning of the
+%exercise -- or bring a printed table with you. Also note that you can use more
+%symmetries, in particular for a=1.
 
 \subsubsection{Verify point is on curve}
 \subsubsection{Compute points}
