@@ -214,6 +214,23 @@ Then $k$ is congruent to
 \section{Elliptic curves}
 \subsection{Edwards curves}
 \subsubsection{Finding all affine points on curve}
+
+\begin{enumerate}
+\item Calculate table of squares. See table.
+\item Calculate a table of inverses for $1,2,3,.., p-1$. This handy but not necessary.
+\item Rewrite the Edwards Curve from $a \cdot x^2 + y^2 = 1 - d \cdot x^2 \cdot y^2$ to $y^2 = \frac{(1 - a \cdot x^2)}{(1-d \cdot x^2)}$. (If $a=1$, it is a `normal' Edwards curve and if $a\not= 1$ a twisted Edwards Curve.)
+\item Enter all x-coordinates in $y^2 = \frac{(1 - a \cdot x^2)}{(1-d \cdot x^2)}$. From $x = 0$ until $x = p-1$. Take care by reducing $mod p$ all the time, this makes it easier when computing inverses (as you have that table already). When you have a fraction $\frac{m}{n}$ compute the inverse of $n$, using XGCD($n$,$p$). Then multiply the inverse with $m$. What you do is $m \cdot n^{-1} mod p$. Look for that result in the table at the row of $b^2$. If there is a square, you have found the coordinate (x,b) and (x,-b). If there is not a square then that point does not exist.
+
+\end{enumerate}
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 
+$b$ & 0 & 1 & 2 & 3 & .. & $(p-1)/2$ \\ 
+\hline 
+$b^2$ & 0 & 1 & 4 & 9 & ..  & .. $mod p$ \\ 
+\hline 
+\end{tabular}
+
 % TODO
 
 Draft this table
