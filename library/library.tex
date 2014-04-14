@@ -162,6 +162,9 @@ $R = \Pi p \leq S, p^{\lfloor log_r(n) \rfloor}$ \\
 $d = gcd(a^R-1, n)$ \\
 $if~1 < d < n \rightarrow d~is~factor$ \\
 
+We choose a random exponent $R$ from the group, and see if $gcd(a^R -1, n)$
+brings an interesting result.
+
 \begin{verbatim}
 def pminus1(n, S):
   a = randint(2,n)
@@ -217,8 +220,9 @@ Then $k$ is congruent to
 
 \section{Elliptic curves}
 \subsection{Edwards curves}
-\subsubsection{Finding all affine points on curve}
+$ax^2+y^2 = 1 + dx^2y^2$
 
+\subsubsection{Finding all affine points on curve}
 \begin{enumerate}
 \item Calculate table of squares. See table.
 \item Calculate a table of inverses for $1,2,3,.., p-1$. This handy but not necessary.
@@ -262,6 +266,9 @@ $x^2 $ & 0 & 1 & 4 mod p & 9 mod p & 16 mod p & 25 mod p & \ldots & $((p-1)/2)^2
 %symmetries, in particular for a=1.
 
 \subsubsection{Verify point is on curve}
+Given a curve and a point, simply verify the equation holds by filling in x and y.
+Compare equality modulo order of underlying field.
+
 \subsubsection{Compute points}
 \subsubsection{Compute fractions}
 \subsubsection{Compute discrete logarithm}
