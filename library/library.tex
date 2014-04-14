@@ -151,7 +151,6 @@ while (a0 != b0):
                 n = n / p
 \end{verbatim}
 
-
 \subsection{Pollard's p-1}
 Given $n$ to factor, a smoothness parameter $S$, random $2 \leq a < n$: \\
 $R = \Pi p \leq S, p^{\lfloor log_r(n) \rfloor}$ \\
@@ -216,19 +215,30 @@ Then $k$ is congruent to
 \subsection{Edwards curves}
 \subsubsection{Finding all affine points on curve}
 % TODO
+
+Draft this table
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$x $ & 0 & 1 & 2 & 3 & 4 & 5 & \ldots & (p-1)/2 \\
+\hline
+$x^2 $ & 0 & 1 & 4 mod p & 9 mod p & 16 mod p & 25 mod p & \ldots & $((p-1)/2)^2$ mod p \\
+\hline
+\end{tabular}
 %b   | 0 | 1 | 2 | 3 .. | (p-1)/2
 %b^2 | 0 | 1 | 4 mod p | 3^2 mod p
 
-%then transform the equation ax^2+y^2=1+dx^2y^2
-%to y^2=(1-ax^2)/(1-dx^2)
-%plug in all x values and check whether the right hand side gives a square: if
-%so you've found (x,y) and (x,-y) - if not there is no point with that
-%x-coordinate
-%In case you encounter a division by 0 check the original equation. For
-%computing the division by (1-dx^2) you might want to have a list of inverses or
-%a calculator that computes them for you and compute at the beginnin of the
-%exercise -- or bring a printed table with you. Also note that you can use more
-%symmetries, in particular for a=1.
+then transform the equation $ax^2+y^2=1+dx^2y^2$
+to $y^2=(1-ax^2)/(1-dx^2)$
+
+Plug in all $x$ values and check whether the right hand side gives a square: if
+so you've found (x,y) and (x,-y) - if not there is no point with that
+x-coordinate.
+
+In case you encounter a division by 0 check the original equation. For
+computing the division by $(1-dx^2)$ you might want to have a list of inverses or
+a calculator that computes them for you and compute at the beginning of the
+exercise -- or bring a printed table with you. Also note that you can use more
+symmetries, in particular for a=1.
 
 \subsubsection{Verify point is on curve}
 \subsubsection{Compute points}
