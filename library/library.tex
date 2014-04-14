@@ -269,8 +269,11 @@ $b^2 $ & 0 & 1 & 4 mod p & 9 mod p & 16 mod p & 25 mod p & \ldots & $((p-1)/2)^2
 Given a curve and a point, simply verify the equation holds by filling in x and y.
 Compare equality modulo order of underlying field.
 
-\subsubsection{Compute points}
 \subsubsection{Compute fractions}
+At some point when during computation a fraction occurs, we have to use the inverse to convert the fraction into an integer.
+E.g. Say we have the fraction $\frac{8}{50}$ in field $F_{71}$. Then we first compute the inverse of $50^{-1} mod 71 = 27$, using XGCD. Then $8*27 mod 71 = 3$. More generally, $\frac{a}{b}$ in field $F_q$ is $a*b^{-1} mod q$.
+
+
 \subsubsection{Compute discrete logarithm}
 \subsubsection{Translate to Montgomery form}
 \subsubsection{Translate to Weierstrass form}
