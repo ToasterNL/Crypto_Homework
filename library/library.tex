@@ -274,19 +274,26 @@ At some point when during computation a fraction occurs, we have to use the inve
 E.g. Say we have the fraction $\frac{8}{50}$ in field $F_{71}$. Then we first compute the inverse of $50^{-1} mod 71 = 27$, using XGCD. Then $8*27 mod 71 = 3$. More generally, $\frac{a}{b}$ in field $F_q$ is $a*b^{-1} mod q$.
 
 \subsubsection{Compute discrete logarithm}
-This really depends on the previous/related questions. The example that follows is from question 5c of the previous exam.
-In question 5a and 5b we discover the property that a coordinate on the curve, might result in the scalar needed to double or add P with. E.g. 2P is (18,9), thus $\frac{18}{9}$ is $18*9^{-1} mod 71 = 2$, which is the same 2 as in 2P (note that the inverse is not necessary here as 18/9 is 2, but you might want this for a less neat fraction).
-Thus given a point, in the case of 5c, (6,43). We could hypothesise the also $\frac{6}{43}$ applies here. Computing the integer of this, see Compute Fractions above, we obtain 15. Which would mean $15P = 8P + 4P + 3P$, these points we already computed in 5a and using addition rules for short Weierstrass curves, we indeed obtain the coordinate given. Thus the DL is indeed 15.
 
-\subsubsection{Translate to Montgomery form}
+
+\subsubsection{Translate Montgomery <--> Edwards Curve form}
+A Montgomery Curve over field K: $M_{A,B}: By^2 = x^3 + Ax^2 + x$ for certain $A,B \in K$ and $B(A^2 - 4) \not= 0$
+
+
+
 \subsubsection{Translate to Weierstrass form}
 
 \subsection{Weierstrass curves}
 \subsubsection{Finding all points on curve}
+See Edwards Curve
 \subsubsection{Verify point is on curve}
-\subsubsection{Compute points}
+See Edwards Curve
 \subsubsection{Compute fractions}
+See Edwards Curve
 \subsubsection{Compute discrete logarithm}
+This really depends on the previous/related questions. The example that follows is from question 5c of the previous exam.
+In question 5a and 5b we discover the property that a coordinate on the curve, might result in the scalar needed to double or add P with. E.g. 2P is (18,9), thus $\frac{18}{9}$ is $18*9^{-1} mod 71 = 2$, which is the same 2 as in 2P (note that the inverse is not necessary here as 18/9 is 2, but you might want this for a less neat fraction).
+Thus given a point, in the case of 5c, (6,43). We could hypothesise the also $\frac{6}{43}$ applies here. Computing the integer of this, see Compute Fractions above, we obtain 15. Which would mean $15P = 8P + 4P + 3P$, these points we already computed in 5a and using addition rules for short Weierstrass curves, we indeed obtain the coordinate given. Thus the DL is indeed 15.
 \subsubsection{Translate to Montgomery form}
 \subsubsection{Translate to Edwards form}
 
