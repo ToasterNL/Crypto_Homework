@@ -276,8 +276,21 @@ E.g. Say we have the fraction $\frac{8}{50}$ in field $F_{71}$. Then we first co
 \subsubsection{Compute discrete logarithm}
 
 
-\subsubsection{Translate Montgomery <--> Edwards Curve form}
-A Montgomery Curve over field K: $M_{A,B}: By^2 = x^3 + Ax^2 + x$ for certain $A,B \in K$ and $B(A^2 - 4) \not= 0$
+\subsubsection{Translate Montgomery <--> Twisted Edwards Curve form}
+A Montgomery Curve over field K with characteristic 2 in elliptic form : $M_{A,B}: Bv^2 = u^3 + Au^2 + u$.
+A Twisted Edwards Curve in elliptic form: $E_{a,d}: ax^2 + y^2 = 1 + dx^2y^2$, with $a,d \in K \backslash \{0\}, a \not= d$
+
+Theorem: Every twisted Edwards curve is birationally equivalent  to a Montgomery curve over $K$.
+In  particular, the twisted Edwards curve $E_{a,d}$ is birationally equivalent to the Montgomery curve $M_{A,B}$ where $A = \frac{2(a+d)}{a-d}$, and $B = \frac{4}{a-d}$.
+
+
+Mapping a point: $\psi\,:\,E_{a,d} \rightarrow M_{A,B}$.\\ 
+$(x,y) \mapsto (u,v) = \left(\frac{1+y}{1-y},\frac{1+y}{(1-y)x}\right)$ \\
+
+is a birational equivalence from $E_{a,d}$ to $M_{A,B}$, with inverse:\\
+$\psi^{-1}$: $M_{A,B} \rightarrow E_{a,d}$ \\
+$(u,v) \mapsto (x,y) = \left(\frac{u}{v},\frac{u-1}{u+1}\right),
+a=\frac{A+2}{B}, d=\frac{A-2}{B}$
 
 
 
@@ -343,7 +356,7 @@ $m = 1234$
 This exercise is about computing discrete logarithms in some groups.
 The order of 2 in $\mathcal{F}_{211}^{*}$is 210. Alice uses the group generated
 by $g = 2$ for cryptography. Her public key is $g_c = 107$.
-Your task is to compute $0 \leq k < 210$ with $2k \equiv 107 \mod 211$ in the following two steps
+Your task is to compute $0 \leq k < 210$ with $2^k \equiv 107 \mod 211$ in the following two steps
 
 \subsubsection{a (3 points)}
 Compute k modulo 2 and modulo 3.
