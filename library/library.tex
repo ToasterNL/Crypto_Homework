@@ -480,13 +480,38 @@ construction of $g_c$ and the same goes for $f=3$.
 This allows us to go on to the next question, but what if $g_c^{\frac{210}{f}}
 \not \equiv 1 \mod 211$?
 
+\small{
+\begin{verbatim}
+> > What if you don't get ==1?
+> Off the top off my head, we'd do the same modular exponentiation operation
+for the generator and use this for another congruence relation between h
+and the subgroup to solve with the CRT.
+>
+Yes, for the first one you compare h^(210/2) with
+g^0=1 and g^(210/2)=210=-1, where the first one means k \equiv 0 mod 2
+and the second one means k \equiv 1 mod 2.
+For the second one you compare h^(210/3) with
+g^0=1 (meaning k \equiv 0 mod 3) , g^(210/3) (meaning k \equiv 1 mod 3)
+and g^(2*(210/3)) (meaning k \equiv 2 mod 3).
+\end{verbatim}
+}
+
 Example where $g_c=181$
 
+$g^0 = 1$ \\
 $n_1 = 210/2 = 105$ \\
 $g^n_1 = 2^{105} \mod 211 = 210 = -1$ \\
 ${g_c}^n_1 = 181^{105} \mod 211 = 210 = -1$ \\
-TODO finish
-%So $g_c=g=2$ mod $
+So $k \equiv 1 \mod 2$ (because $1^{-1} = 1$).
+
+$n_2 = 210/3 = 70$ \\
+$g^n_2 = 2^{70} \mod 211 = 196$ \\
+${g_c}^n_2 = 181^{70} \mod 211 = 14$ \\
+
+Some trial and error finds $(2^{2 \cdot 70} \mod 211 = 14$!
+So $g_c \equiv 2 \mod 3$
+This arguments works all the way up to getting completely stuck, because the
+answer we are after is itself a prime (71). But this works!
 
 \subsubsection{b (6 points)}
 Use the baby-step-giant-step algorithm to determine $k$.
