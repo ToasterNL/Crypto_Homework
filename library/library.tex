@@ -62,11 +62,67 @@ The order (number of elements) of a finite field is $p^n$ where $p$ is the chara
 \subsection{Factorization pattern of polynomial}
 \subsection{Compute number of irreducible polynomials}
 \subsection{Show polynomial is irreducible (using Miller-Rabin test)}
+\subsection{An example of CRT, also wikipedia}
+Example:\\
+
+$ 
+  x \equiv 2 \pmod{3} \\
+  x \equiv 3 \pmod{4} \\
+  x \equiv 1 \pmod{5}
+$
+
+We start by translating these congruences into equations for some t, s, and u:
+
+*Equation 1: $x = 2 + 3t$
+*Equation 2: $x = 3 + 4s$
+*Equation 3: $x = 1 + 5u$
+
+Start by substituting the x from equation 1 into congruence 2:\\
+
+$
+  2 + 3t \equiv 3 \pmod{4} \\
+      3t \equiv 1 \pmod{4} \\
+       t \equiv (3)^{-1} \equiv 3 \pmod{4}
+$
+
+meaning that $t = 3 + 4s$ for some integer s.
+
+Substitute t into equation 1:
+
+$x = 2 + 3t = 2 + 3(3 + 4s) = 11 + 12s$
+
+Substitute this x into congruence 3:
+
+$11 + 12s \equiv 1 \pmod{5}$
+
+Casting out fives, we get\\
+
+$
+  1 + 2s \equiv 1 \pmod{5} \\
+      2s \equiv 0 \pmod{5}
+$
+
+meaning that
+
+$s = 0 + 5u$
+
+for some integer u.
+
+Finally,
+
+$x = 11 + 12s = 11 + 12(5u) = 11 + 60u$
+
+So, we have solutions 11, 71, 131, 191, …
+
+Notice that 60 = lcm(3,4,5). If the moduli are pairwise [[coprime]] (as they are in this example), the solutions will be congruent modulo their product.
+
 
 
 \subsection{Show there is no polynomial of given degree}
 \subsection{Smallest extension field in which polynomial factors completely into linear factors}
 \subsection{Product of order of other polynomials of given degree}
+
+
 
 \section{RSA}
 \subsection{RSA encryption}
