@@ -276,7 +276,7 @@ E.g. Say we have the fraction $\frac{8}{50}$ in field $F_{71}$. Then we first co
 \subsubsection{Compute discrete logarithm}
 
 
-\subsubsection{Translate Montgomery <--> Twisted Edwards Curve form}
+\subsubsection{Translate Montgomery $\leftrightarrow$ Twisted Edwards Curve form (wikipedia)}
 A Montgomery Curve over field K with characteristic 2 in elliptic form : $M_{A,B}: Bv^2 = u^3 + Au^2 + u$.
 A Twisted Edwards Curve in elliptic form: $E_{a,d}: ax^2 + y^2 = 1 + dx^2y^2$, with $a,d \in K \backslash \{0\}, a \not= d$
 
@@ -292,9 +292,23 @@ $\psi^{-1}$: $M_{A,B} \rightarrow E_{a,d}$ \\
 $(u,v) \mapsto (x,y) = \left(\frac{u}{v},\frac{u-1}{u+1}\right),
 a=\frac{A+2}{B}, d=\frac{A-2}{B}$
 
+Notice that this equivalence between the two curves is not valid everywhere: indeed the map $\psi$ is not defined at the points $v = 0$ or $u + 1 = 0$ of the $M_{A,B}$.
 
+\subsubsection{Translate Montgomery $\leftrightarrow$ Weierstrass form (wikipedia)}
+A Montgomery Curve over field K with characteristic 2 in elliptic form : $M_{A,B}: By^2 = x^3 + Ax^2 + x$.\\
+can be transformed in the following way:\\
+divide each term of the equation for $M_{A,B}$ by $B^3$, and substitute the variables ''x'' and ''y'', with $u=\frac{x}{B}$ and $v=\frac{y}{B}$ respectively, to get the equation:\\
 
-\subsubsection{Translate to Weierstrass form}
+$v^2 = u^3 + \frac{A}{B}u^2 + \frac{1}{B^2}u$.\\
+
+To obtain a short Weierstrass form from here, it is sufficient to replace ''u'' with the variable $t-\frac{A}{3B}$:\\
+
+$v^2 = \left(t-\frac{A}{3B}\right)^3 + \frac{A}{B}\left(t-\frac{A}{3B}\right)^2 + \frac{1}{B^2}\left(t-\frac{A}{3B}\right)$;\\
+
+finally, this gives the equation:\\
+
+$v^2 = t^3 + \left(\frac{3-A^2}{3B^2}\right)t + \left(\frac{2A^3-9A}{27B^3}\right)$.
+
 
 \subsection{Weierstrass curves}
 \subsubsection{Finding all points on curve}
@@ -308,7 +322,10 @@ This really depends on the previous/related questions. The example that follows 
 In question 5a and 5b we discover the property that a coordinate on the curve, might result in the scalar needed to double or add P with. E.g. 2P is (18,9), thus $\frac{18}{9}$ is $18*9^{-1} mod 71 = 2$, which is the same 2 as in 2P (note that the inverse is not necessary here as 18/9 is 2, but you might want this for a less neat fraction).
 Thus given a point, in the case of 5c, (6,43). We could hypothesise the also $\frac{6}{43}$ applies here. Computing the integer of this, see Compute Fractions above, we obtain 15. Which would mean $15P = 8P + 4P + 3P$, these points we already computed in 5a and using addition rules for short Weierstrass curves, we indeed obtain the coordinate given. Thus the DL is indeed 15.
 \subsubsection{Translate to Montgomery form}
+See above.
 \subsubsection{Translate to Edwards form}
+See above.
+
 
 \section{Examples}
 From the exam of 28 January 2014
