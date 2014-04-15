@@ -188,23 +188,23 @@ otherwise $n$ is prime or Carmichael for $k$ rounds. \\
 $h = g^e \mod q$ \\
 Compute group order $n$, $q-1$ for finite fields. \\
 $m = \lfloor \sqrt{n} \rfloor$\\
-$d = m^{-1} \pmod{q}$\\
 
 Draw up a table for baby-steps, $g^i \mod q$.\\
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
-$i = $ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & \ldots \\
+$i $ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & \ldots \\
 \hline
-• & $1$ & $g$ & $g^2$ & $g^3$ & $g^4$ & $g^5$ & $g^6$ & \ldots \\
+$g^i \mod q$ & $1$ & $g$ & $g^2$ & $g^3$ & $g^4$ & $g^5$ & $g^6$ & \ldots \\
 \hline
 \end{tabular}
 
-Draw up a table for giant-steps, $h \cdot d^j \mod q$ until you find a match for the baby-steps.\\
+Draw up a table for giant-steps, $h \cdot g^(-jm) \mod q$ until you find a match for the baby-steps.\\
+$d = {g^m}^{-1} \pmod{q}$\\
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
-$j = $ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & \ldots \\
+$j $ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & \ldots \\
 \hline
-• & $h$ & $h \cdot d$ & $h \cdot d^2$ & $h \cdot d^3$ & $h \cdot d^4$ & $h \cdot d^5$ & $h \cdot d^6$ & \ldots \\
+$(hg^{-m})^j \mod q$ & $h$ & $h \cdot d$ & $h \cdot d^2$ & $h \cdot d^3$ & $h \cdot d^4$ & $h \cdot d^5$ & $h \cdot d^6$ & \ldots \\
 \hline
 \end{tabular} \\
 $e = m \cdot j + i$
@@ -273,11 +273,8 @@ Compare equality modulo order of underlying field.
 At some point when during computation a fraction occurs, we have to use the inverse to convert the fraction into an integer.
 E.g. Say we have the fraction $\frac{8}{50}$ in field $F_{71}$. Then we first compute the inverse of $50^{-1} mod 71 = 27$, using XGCD. Then $8*27 mod 71 = 3$. More generally, $\frac{a}{b}$ in field $F_q$ is $a*b^{-1} mod q$.
 
-\subsubsection{Compute discrete logarithm}
-This really depends on the previous/related questions. The example that follows is from question 5c of the previous exam.
-In question 5a and 5b we discover the property that a coordinate on the curve, might result in the scalar needed to double or add P with. E.g. 2P is (18,9), thus $\frac{18}{9}$ is $18*9^{-1} mod 71 = 2$, which is the same 2 as in 2P (note that the inverse is not necessary here as 18/9 is 2, but you might want this for a less neat fraction).
-Thus given a point, in the case of 5c, (6,43). We could hypothesise the also $\frac{6}{43}$ applies here. Computing the integer of this, see Compute Fractions above, we obtain 15. Which would mean $15P = 8P + 4P + 3P$, these points we already computed in 5a and using addition rules for short Weierstrass curves, we indeed obtain the coordinate given. Thus the DL is indeed 15.
 
+\subsubsection{Compute discrete logarithm}
 \subsubsection{Translate to Montgomery form}
 \subsubsection{Translate to Weierstrass form}
 
@@ -289,5 +286,181 @@ Thus given a point, in the case of 5c, (6,43). We could hypothesise the also $\f
 \subsubsection{Compute discrete logarithm}
 \subsubsection{Translate to Montgomery form}
 \subsubsection{Translate to Edwards form}
+
+\section{Examples}
+From the exam of 28 January 2014
+\subsection{RSA}
+This problem is about RSA encryption
+
+\subsubsection{a (1 point)}
+Alice's public key is $(n, e) = (13589, 5)$. Encrypt the
+message $m = 2801$ to Alice using schoolbook RSA (no padding).
+
+$c=m^e \mod n$ \\
+$c=2801^5 \mod 13589$ \\
+\verb|c=pow(2801,5,13589)| \\
+$c=8679$
+
+\subsubsection{b (2 points)}
+Let $p = 653$ and $q = 701$. Compute the public key
+using $e = 3$ and the corresponding private key.
+
+$n = pq = 653 \cdot 701$ \\
+$n = 457753$ \\
+$\phi(n) = (p-1)(q-1) = 456400$ \\
+$d = e^{-1} \mod \phi(n)$ \\
+$d = 3^{-1} \mod 456400$ \\
+\verb|d = pow(3, -1, 456400)| \\
+$d = 304267$ \\
+
+$public = (n,e) = (457753, 3)$ \\
+$private = (n,d)= (457753, 304267)$ \\
+
+
+\subsubsection{c (3 points)}
+Decrypt the message $c = 4839$ which was encrypted to your key under (b). Feel
+free to use $p$ and $q$.
+
+We know that while we \textit{can} use $p$ and $q$ here, we already have $d$ to let
+us do it in one step.
+
+$m=c^d \mod n$ \\
+$m=4839^{304267} \mod 457753$ \\
+\verb|m = pow(4839, 304267, 457753)| \\
+$m = 1234$
+
+\subsection{DLP}
+This exercise is about computing discrete logarithms in some groups.
+The order of 2 in $\mathcal{F}_{211}^{*}$is 210. Alice uses the group generated
+by $g = 2$ for cryptography. Her public key is $g_c = 107$.
+Your task is to compute $0 \leq k < 210$ with $2k \equiv 107 \mod 211$ in the following two steps
+
+\subsubsection{a (3 points)}
+Compute k modulo 2 and modulo 3.
+
+We are asked to find congruence relations between $g_c$ and the group from
+which it came in order to solve them via the Chinese Remainder Theorem.
+
+We are given that the order of 2 (the generator of $F_{211}^{*}$) is 210
+meaning that it takes this many exponentiations to come full circle to
+$2^{211} \mod 211 = 2$ (hence \textit{cyclic}).
+The point now is that we can see how many subgroups are in our group by
+factoring this order.
+$210 = 2 \cdot 3 \cdot 5 \cdot 7$ \\
+
+We should first check to see if $g_c^{\frac{210}{f}} \equiv 1 \mod n$
+for the given two factors $f$, 2 and 3. And in this case they are.
+For $f=2$ this means that $107^{105} \equiv 107^{210} \mod 211$.
+In other words: the factor 2 does not affect the behavior of the subgroup which
+$g_c$ 107 is in. From there we can conclude that $f=2$ was not involved in the
+construction of $g_c$ and the same goes for $f=3$.
+This allows us to go on to the next question, but what if $g_c^{\frac{210}{f}}
+\not \equiv 1 \mod 211$?
+
+Example where $g_c=181$
+
+$n_1 = 210/2 = 105$ \\
+$g^n_1 = 2^{105} \mod 211 = 210 = -1$ \\
+${g_c}^n_1 = 181^{105} \mod 211 = 210 = -1$ \\
+TODO finish
+%So $g_c=g=2$ mod $
+
+\subsubsection{b (6 points)}
+Use the baby-step-giant-step algorithm to determine $k$.
+Note, you can make use of the result obtained
+under (a).
+
+Given that we know $k \equiv 0 \mod 2$ and $k \equiv 0 \mod 3$, we can work in
+subgroup $210/2/3=35$.
+As long as we take care to exponentiate our generator and
+$hg^{-1}$ appropriately this works completely transparently.
+We find the number of steps $m$ to be taken with $m = round(sqrt(35)) = 6$
+We draft the BSGS tables:
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+$j $ & 0 & 1 & 2 & 3 & 4 & 5 & 6  \\
+\hline
+$(2^6)^j \mod 211$ & $1$ & $64$ & $87$ & $82$ & $184$ & $171$ & $183$ \\
+\hline
+\end{tabular}
+
+For the giant steps we can compute a new basis as $(2^6)^{-m} = (2^{36})^{-1} =
+113$
+so in stead of computing more inversions or multiplications we need only modular exponentiation.
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+$i $ & 0 & 1 & 2 & 3 & 4 & 5 & 6  \\
+\hline
+$107 \cdot (2^{36})^{-i} \mod 107$ & $107$ & $64$ & $58$ & $13$ & $203$ & $151$ & $183$ \\
+\hline
+\end{tabular}
+
+This gives the result $k=m \cdot 1 + 1 = 6 \cdot 1 + 1 = 7$ meaning $k \equiv 7
+\mod 35$.
+This leads us to the one and only correct answer $k=42$, which we can check to
+make sure.
+$2^{42} \equiv 107 \mod 211$
+\verb|pow(2,42,211)|
+
+\subsection{Factoring}
+This exercise is about factoring $n = 2014$. Obviously, 2 is a factor, so
+the rest of the exercise is about factoring the remaining factor $m = 2014/2 =
+1007$.
+
+\subsubsection{a (5 points)}
+Use Pollard’s rho method of factorization to find a factor of 1007.
+Use starting point $x_0 = 1$, iteration function $x_{i+1} = x_i^2 + 1$ and
+Floyd's cycle finding method, i.e. compute $gcd(x_{2i} - x_i , 1007)$ until
+a non-trivial gcd is found.
+
+We generate the random walk to get enough points.
+$x_0 = 1$ \\
+$x_1 = 2$ \\
+$x_2 = 5$ \\
+$x_3 = 26$ \\
+$x_4 = 677$ \\
+$x_5 = 145$ \\
+$x_6 = 886$ \\
+$x_7 = 544$ \\
+$x_8 = 886$ \\
+
+Try a few gcds:
+
+$gcd(x2-x1, 1007) = gcd(3,   1007) = 1$ \\
+$gcd(x4-x2, 1007) = gcd(672, 1007) = 1$ \\
+$gcd(x6-x3, 1007) = gcd(860, 1007) = 1$ \\
+$gcd(x8-x4, 1007) = gcd(209, 1007) = 19$
+
+\begin{verbatim}
+sage: def next(foo): return pow(foo,2,1007) +1 # floyd's cycle finding
+sage: def da_range(this=0,total=10): return [next(this)] + da_range(next(this),total-1) if total > 0 else []
+sage: xes=da_range(0,10)
+sage: xes
+[1, 2, 5, 26, 677, 145, 886, 544, 886, 544]
+sage: [gcd(xes[2*x]-xes[x], 1007) for x in range(1,5)]
+[1, 1, 1, 19]
+\end{verbatim}
+
+\subsubsection{b (2 points)}
+Perform one round of the Fermat test with base
+a = 2 to test whether 19 is prime.
+What is the answer of the Fermat test?
+
+We check $gcd(2,19) = 1$ (yes) \textbf{and} $2^18 \mod 19 \not \equiv 1$ (no).
+19 is not composite, so it's prime (or Carmichael).
+
+\subsubsection{c (3 points)}
+Use Pollard’s p − 1 factorization method to factor the number
+$n = 1007$ with base $u = 2$ and exponent $2^3 \cdot 3^2$ .
+
+$gcd(2^{8*9} -1, 1007)$ \\
+\begin{verbatim}
+sage: gcd(2**(8*9) - 1, 1007)
+19
+\end{verbatim}
+
+
 
 \end{document}
