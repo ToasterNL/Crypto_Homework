@@ -566,6 +566,20 @@ $y^2 = (1-1)/(1+6) = 0                                  (12, 0)$ \\
 Verify that $P = (6, 3)$ is on the curve. Compute the
 order of $P$.
 
+$x^2+y^2 = 1 - 5x^2y^2$ \\
+$36+9 = 1 - 180 \cdot 9 (\mod 13)$
+\begin{verbatim}
+sage: (36+9) % 13
+6
+sage: (1-180*9) % 13
+6
+\end{verbatim}
+$45 = 1 - 180 \cdot 9 (\mod 13)$
+$45 = 1 - 1620 (\mod 13)$
+$45 = 1 - 8 (\mod 13)$
+$45 = 6 (\mod 13)$
 
+To compute order of point:
+TODO ???
 
 \end{document}
